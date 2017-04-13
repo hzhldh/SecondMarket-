@@ -11,14 +11,9 @@
 	</head>
 
 	<body>
-		<div class="wu-prompt" id="promptId">
-			<div class="wu-prompt-img" style="font-size: 22px;">
-				<img src="img/eqm.png" style="margin-right: 5px" /><span id="promptxt"></span>
-			</div>
-		</div>
 		<header class="mui-bar mui-bar-nav" style="background-color: #1fa5da;">
 			<h1 class="mui-title" style="color: white;">注册</h1>
-			<a class="mui-icon mui-icon-left-nav" style="color: white;"></a>
+			<a class="mui-icon mui-icon-left-nav" style="color: white;" id="closeID"></a>
 			<a class="wu-a-right" id="signInId">登录</a>
 		</header>
 		<div class="mui-content" style="background-color: #f9f9fb;">
@@ -27,25 +22,25 @@
 				<li class="wu-li-style">
 					<div class="mui-input-row" style="margin-top: 4px;margin-top: 4px;">
 						<label>用 户 名:</label>
-						<input type="text" class="mui-input-clear" id="userName" />
+						<input type="text" class="mui-input-clear" id="username" />
 					</div>
 				</li>
 				<li class="wu-li-style" style="">
 					<div class="mui-input-row" style="margin-top: 4px;margin-top: 4px;">
 						<label>密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码:</label>
-						<input type="password" id="passName" />
+						<input type="password" id="password" />
 					</div>
 				</li>
 				<li class="wu-li-style" style="">
 					<div class="mui-input-row" style="margin-top: 4px;margin-top: 4px;">
 						<label>确认密码:</label>
-						<input type="password" id="passName2" />
+						<input type="password" id="password2" />
 					</div>
 				</li>
 				<li class="wu-li-style" style="border-bottom: 1px solid #e8e9ea;">
 					<div class="mui-input-row" style="margin-top: 4px;margin-top: 4px;">
 						<label>手机号码:</label>
-						<input type="text" id="phoneNumber" />
+						<input type="text" id="phone" />
 					</div>
 				</li>
 			</ul>
@@ -61,113 +56,54 @@
 	<script type="text/javascript" src="js/j_s.js"></script>
 	<script type="text/javascript">
 		mui.init()
-		document.getElementById("userName").addEventListener("input", function() {
-			var myValue = document.getElementById("userName").value;
+		var url = getUrl();   
+		
+		document.getElementById("username").addEventListener("input", function() {
+			var username = document.getElementById("username").value;
 			var myBtn = document.getElementById("register");
-			sdee(myValue, myBtn);
+			sdee(username, myBtn);
 		});
 
-		var num = 1;
-		var url = "http://139.196.196.64/s.asmx";
 		document.getElementById("register").addEventListener("tap", function() {
-			var myValue = document.getElementById("userName").value;
-			var myPass = document.getElementById("passName").value;
-			var mypass2 = document.getElementById("passName2").value;
-			var myNumber = document.getElementById("phoneNumber").value;
-			var myArray = chkStrOld(myNumber);
-			var myPrompt = document.getElementById("promptId");
-			var mytxt = document.getElementById("promptxt");
-			if (myValue.length == 0) {
-				return false;
+			var username = document.getElementById("username").value;
+			var password = document.getElementById("password").value;
+			var password2 = document.getElementById("password2").value;
+			var phone = document.getElementById("phone").value;
+			
+			if (username.length == 0||password.length == 0) {
+				mui.toast("用户名或密码不能为空！");
+			} else if (password.length < 6 || password.length > 16){
+				mui.toast("密码必须是6-16位");
+			} else if (password != password2) {
+				mui.toast("两次密码不一致");
+			} else if (phone.length != 11||isNaN(phone)) {
+				mui.toast("必须输入11位手机号");
+			} else{
+				/*注册验证*/
+				mui.ajax(url+'/user/addUser', {  
+                    data: {username:username,password:password,phone:phone},
+                    type: 'POST',  
+                    timeout: 100000,  
+                    success: function(data) {  
+                        if (data==0) {
+                        	mui.toast('注册成功');
+                        } else if(data=100){
+                        	mui.toast("已存在该用户名");
+                        } else{
+                        	mui.toast("注册失败");
+                        }
+                    },  
+                    error: function() {  
+                        mui.toast("连接服务器失败");  
+                    }  
+                });
 			}
-			if (myPass.length == 0) {
-				myPrompt.style.display = "block";
-				mytxt.innerHTML = "密码不能为空";
-				return false;
-			} else {
-				myPrompt.style.display = "none";
-			}
-
-			if (myPass.length > 6 && myPass.length < 18) {
-				myPrompt.style.display = "none";
-			} else {
-				myPrompt.style.display = "block";
-				mytxt.innerHTML = "密码必须是6-16位";
-				return false;
-			}
-
-			if (mypass2.length == 0) {
-				myPrompt.style.display = "block";
-				mytxt.innerHTML = "请输入确认密码";
-				return false;
-			} else {
-				myPrompt.style.display = "none";
-			}
-
-			if (myPass == mypass2) {
-				myPrompt.style.display = "none";
-			} else {
-				myPrompt.style.display = "block";
-				mytxt.innerHTML = "密码不一致";
-				return false;
-			}
-
-			if (myNumber.length == 0) {
-				myPrompt.style.display = "block";
-				mytxt.innerHTML = "手机号不能为空";
-				return false;
-			} else {
-				myPrompt.style.display = "none";
-			}
-
-			if (myNumber.length == 11) {
-				for (var i = 0; i < myArray.length; i++) {
-					if (myArray[i] <= 9 && myArray[i] >= 0) {
-						myPrompt.style.display = "none";
-						num++
-						if (num == 12) {
-							num = 0;
-							var myUserName = document.getElementById("userName").value;
-							var myPassName = document.getElementById("passName").value;
-							var myPhoneNumber = document.getElementById("phoneNumber").value;
-							getAjax(url + "/Insert", {
-									id: 'www',
-									table: 'wu',
-									values: JSON.stringify({
-										'userID': 2,
-										'userName': myUserName,
-										'password': myPassName,
-										'phoneNumber': myPhoneNumber,
-										'useState':0
-									})
-								},
-								function(a) {
-									mui.toast("        注册成功               ");
-									var myClose = plus.webview.currentWebview();
-									plus.webview.close(myClose);
-								},
-								function(d) {
-									mui.toast("        注册失败               ");
-							});
-						} else {
-
-						}
-					} else {
-						myPrompt.style.display = "block";
-						mytxt.innerHTML = "手机号格式错误";
-						return false;
-					}
-				}
-
-			} else {
-				myPrompt.style.display = "block";
-				mytxt.innerHTML = "手机号格式错误";
-				return false;
-			}
+	
 		});
-
-		document.getElementById("promptId").addEventListener("tap", function() {
-			myPrompt = document.getElementById("promptId").style.display = "none";
+		
+		document.getElementById("closeID").addEventListener("tap",function(){
+			var myClose = plus.webview.currentWebview()
+			plus.webview.close(myClose);
 		});
 
 		document.getElementById("signInId").addEventListener("tap", function() {
