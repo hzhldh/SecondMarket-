@@ -1,3 +1,10 @@
+/*定义全局常量*/
+var url = "http://192.168.24.43:8080/SecondMarketServer";    
+function getUrl(){    
+  return url;    
+}  
+
+/*输入框变化后登陆按钮变色*/
 function sdee(event, vow) {
 	if(event.length == 0) {
 		vow.style.backgroundColor = "#ccc";
