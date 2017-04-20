@@ -23,7 +23,7 @@
 					<span class="wu-she-zhi"><img src="../img/gou_wu_che/she_zhi.png" style="width: 100%;" id="setUpMe"></span>
 					<span class="wu-she-zhi"><img src="../img/gou_wu_che/xin_xi.png" style="width: 100%;"></span>
 				</div>
-				<div class="wei_denglu" id="notLogged" style="display: none;">你还未
+				<div class="wei_denglu" id="notLogged">你还未
 					<a href="###" id="signIn">登录</a>
 				</div>
 			</div>
@@ -133,36 +133,27 @@
 		</div>
 	</body>
 	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/j_s.js"></script>
+	<script type="text/javascript" src="../jquery/jquery-1.9.1.min.js"></script>
+	
 	<script type="text/javascript">
 		mui.init()
-		mui.plusReady(function() {
-			var myUserName = document.getElementById("userName").innerHTML;
-			for(var i = 0; i <= plus.storage.getLength(); i++) {
-				if(plus.storage.getItem('userName') == null) {
-					document.getElementById("AccountName").style.display = "none";
-					document.getElementById("setUp").style.display = "none";
-					document.getElementById("notLogged").style.display = "block";
-				} else {
-					document.getElementById("AccountName").style.display = "block";
-					document.getElementById("setUp").style.display = "block";
-					document.getElementById("notLogged").style.display = "none";
-					document.getElementById("userName").innerHTML = plus.storage.getItem('userName');
-				}
-			}
+	    var url = getUrl();   	   
+        var loginUserMessage=$.parseJSON(localStorage.getItem('loginUser'));//将用户信息转换为Json对象
+        
+        mui.plusReady(function() {//PC端不执行
+   	        if(localStorage.getItem("loginUser")!=null){
+        		document.getElementById("AccountName").style.display = "block";
+				document.getElementById("setUp").style.display = "block";
+				document.getElementById("notLogged").style.display = "none"; 
+   			    document.getElementById("userName").innerHTML =loginUserMessage.username;
+        	}else{
+        		//隐藏设置、信息按钮，
+        		document.getElementById("setUp").style.display = "none";
+        		mui.toast("未登录");
+        	}
 		});
 
-//		document.getElementById("setUpMe").addEventListener("tap", function() {
-//			mui.openWindow({
-//				url: '../signIn.html',
-//				id: 'signIn'
-//			})
-//			var wvs = plus.webview.all();
-//			for(var i = 0; i < wvs.length; i++) {
-//				var men = wvs[i].getURL();
-//				var ws = plus.webview.currentWebview(men);
-//				plus.webview.close(ws);
-//			}
-//		});
       document.getElementById("setUpMe").addEventListener("tap",function(){
       	mui.openWindow({
       		url:'../settingsPage.html',
@@ -182,6 +173,11 @@
       		id:'signIn.html'
       	})
       })
+      
+    //刷新页面
+	window.addEventListener("pageflowrefresh", function (e) {
+	    location.reload();
+	});
 	</script>
 
 </html>

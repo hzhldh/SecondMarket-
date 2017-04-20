@@ -77,13 +77,18 @@
 			var myclose = plus.webview.currentWebview();
 			plus.webview.close(myclose);
 		});
+		
+        /*退出登录*/
 		document.getElementById("exitLogin").addEventListener("tap", function() {
-			plus.storage.clear();
-			alert("退出成功");
-			var myclose = plus.webview.currentWebview();
+            localStorage.clear();
+			mui.toast("退出成功");
+			//自动退回到个人信息页面，并刷新
+			var main = plus.webview.getWebviewById('oneself');//或者通过A页面id获取A页面对象
+            mui.fire(main, "pageflowrefresh" );//触发个人页面的pageflowrefresh方法
+   			var myclose = plus.webview.currentWebview();
 			plus.webview.close(myclose);
-
 		});
+		
 	</script>
 
 </html>
