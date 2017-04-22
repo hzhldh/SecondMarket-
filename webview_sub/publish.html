@@ -40,53 +40,53 @@
 				
 				<div class="mui-input-row mui-radio mui-left">
 						<label>出售</label>
-						<input name="radio1" type="radio">
+						<input name="radio1" type="radio" value="出售" checked>
 				</div>
 				<div class="mui-input-row mui-radio mui-left">
 						<label>求购</label>
-						<input name="radio1" type="radio" checked>
+						<input name="radio1" type="radio" value="求购">
 				</div>				
 				<div class="mui-input-row">
 					<label>物品名称</label>
-					<input type="text" class="mui-input-clear">
+					<input type="text" class="mui-input-clear" id="goods_name">
 				</div>
 				
 				<h5 class="mui-content-padded">所属类型</h5>
-				<select class="mui-btn mui-btn-block">
-					<option value="item-1">数码产品</option>
-					<option value="item-2">生活用品</option>
-					<option value="item-3">代步工具</option>
-					<option value="item-4">房源</option>
-					<option value="item-5">图书体育</option>
-					<option value="item-5">其他</option>
+				<select class="mui-btn mui-btn-block" id="type">
+					<option value="数码产品">数码产品</option>
+					<option value="生活用品">生活用品</option>
+					<option value="代步工具">代步工具</option>
+					<option value="房源">房源</option>
+					<option value="图书体育">图书体育</option>
+					<option value="其他">其他</option>
 				</select>
 
 				<div class="mui-input-row mui-plus-visible">
 					<label>物品描述</label>
-					<input type="text" class="mui-input-speech mui-input-clear" placeholder="语音输入">
+					<input type="text" class="mui-input-speech mui-input-clear" id="description" placeholder="语音输入">
 				</div>	
 				
 				<h5 class="mui-content-padded">拍照或选择图片上传</h5>
 				<button type="button" class="mui-btn mui-btn-outlined" id="addImage">添加</button>
 							
 				<h5 class="mui-content-padded">新旧程度</h5>
-				<select class="mui-btn mui-btn-block">
-					<option value="item-1">全新</option>
-					<option value="item-2">9成新</option>
-					<option value="item-3">8成新</option>
-					<option value="item-4">7成新</option>
-					<option value="item-5">较旧</option>
+				<select class="mui-btn mui-btn-block" id="old_degree">
+					<option value="全新">全新</option>
+					<option value="9成新">9成新</option>
+					<option value="8成新">8成新</option>
+					<option value="7成新">7成新</option>
+					<option value="较旧">较旧</option>
 				</select>
 				<div class="mui-input-row">
 					<label>原价</label>
-					<input type="text" class="mui-input-clear">
+					<input type="text" class="mui-input-clear" id="original_price">
 				</div>
 				<div class="mui-input-row">
 					<label>二手价</label>
-					<input type="text" class="mui-input-clear">
+					<input type="text" class="mui-input-clear" id="second_price">
 				</div>
 				<div class="mui-button-row">
-					<button type="button" class="mui-btn mui-btn-primary" onclick="return false;">确认</button>&nbsp;&nbsp;
+					<button type="button" class="mui-btn mui-btn-primary" onclick="check();">确认</button>&nbsp;&nbsp;
 					<button type="button" class="mui-btn mui-btn-danger" onclick="return false;">取消</button>
 				</div>
 			</form>
@@ -95,9 +95,55 @@
 			
 	</body>
 	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../jquery/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript">
 	mui.init()
 	var url = getUrl(); 
+	
+	//判断是否已经登录
+	mui.plusReady(function() {//PC端不执行
+   	        if(localStorage.getItem("loginUser")!=null){
+        		mui.toast("已登录");
+        	}else{
+        		mui.toast("您还未登录");
+        	}
+	});
+	
+	function check(){ 
+		if(localStorage.getItem("loginUser")!=null){
+        		publish();
+        	}else{
+        		mui.toast("您还未登录，不能发布信息");
+        	}
+	}
+	
+	/*测试提交*/
+	function publish(){ 
+		var publisher=$.parseJSON(localStorage.getItem('loginUser')).username;
+		mui.ajax(url+'/goods/addGoods',{ 
+	        data: { 
+	        	 source_type:$('input:radio:checked').val(),
+	             goods_name:$("#goods_name").val(),
+	             publisher:publisher,
+	             description:$("#description").val(),
+	             type:$("#type").val(),
+	             goods_img:"test.jpg",
+	             original_price:$("#original_price").val(),
+	             second_price:$("#second_price").val(),
+	             old_degree:$("#old_degree").val()
+	        }, 
+	        dataType: 'jsonp', 
+	        type: 'post', 
+	        timeout: 12000, 
+	        success: function(data) { 
+	            mui.toast('发布成功'); 
+	        },
+	        error: function() { 
+	            mui.toast('网络异常，请稍后再试！'); 
+	        } 
+	    }); 
+	}
+	
 	
 
 	/*点击添加按钮触发弹窗*/ 
