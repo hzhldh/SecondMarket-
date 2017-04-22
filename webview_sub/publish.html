@@ -67,6 +67,7 @@
 				</div>	
 				
 				<h5 class="mui-content-padded">拍照或选择图片上传</h5>
+				<button type="button" class="mui-btn mui-btn-outlined" id="addImage">添加</button>
 							
 				<h5 class="mui-content-padded">新旧程度</h5>
 				<select class="mui-btn mui-btn-block">
@@ -89,15 +90,156 @@
 					<button type="button" class="mui-btn mui-btn-danger" onclick="return false;">取消</button>
 				</div>
 			</form>
-			
-			
+					
 		</div>	
 			
 	</body>
 	<script src="../js/mui.min.js"></script>
 	<script type="text/javascript">
-		mui.init()
-		
+	mui.init()
+	var url = getUrl(); 
+	
+
+	/*点击添加按钮触发弹窗*/ 
+	document.getElementById('addImage').addEventListener('tap', function() { 
+	    if (mui.os.plus) { 
+	        var a = [{ 
+	            title: "拍照" 
+	        }, { 
+	            title: "从手机相册选择" 
+	        }]; 
+	        plus.nativeUI.actionSheet({ 
+	            title: "添加图片", 
+	            cancel: "取消", 
+	            buttons: a 
+	        }, function(b) { /*actionSheet 按钮点击事件*/ 
+	            switch (b.index) { 
+	                case 0: 
+	                    break; 
+	                case 1: 
+	                    getImage(); /*拍照*/ 
+	                    break; 
+	                case 2: 
+	                    galleryImg();/*打开相册*/ 
+	                    break; 
+	                default: 
+	                    break; 
+	            } 
+	        }) 
+	    } 
+	 
+	}, false); 		
+	
+    
+    //拍照 
+    function getImage() { 
+        var c = plus.camera.getCamera(); 
+        c.captureImage(function(e) { 
+            plus.io.resolveLocalFileSystemURL(e, function(entry) { 
+                var s = entry.toLocalURL() + "?version=" + new Date().getTime(); 
+                uploadHead(s); /*上传图片*/ 
+            }, function(e) { 
+                 mui.alert(e.message);
+            }); 
+        }, function(s) { 
+        	   mui.alert("error" + s.message);
+        }, { 
+            filename: "_doc/head.png" 
+        }) 
+    } 
+    
+    //本地相册选择 
+    function galleryImg() { 
+        plus.gallery.pick(function(a) { 
+            plus.io.resolveLocalFileSystemURL(a, function(entry) { 
+                plus.io.resolveLocalFileSystemURL("_doc/", function(root) { 
+                    root.getFile("head.png", {}, function(file) { 
+                        //文件已存在 
+                        file.remove(function() { 
+                            console.log("file remove success"); 
+                            entry.copyTo(root, 'head.png', function(e) { 
+                                    var e = e.fullPath + "?version=" + new Date().getTime(); 
+                                    uploadHead(e); /*上传图片*/ 
+                                    //变更大图预览的src 
+                                    //目前仅有一张图片，暂时如此处理，后续需要通过标准组件实现 
+                                }, 
+                                function(e) { 
+                                    mui.alert('copy image fail:' + e.message); 
+                                }); 
+                        }, function() { 
+                            mui.alert("delete image fail:" + e.message); 
+                        }); 
+                    }, function() { 
+                        //文件不存在 
+                        entry.copyTo(root, 'head.png', function(e) { 
+                                var path = e.fullPath + "?version=" + new Date().getTime(); 
+                                uploadHead(path); /*上传图片*/ 
+                            }, 
+                            function(e) { 
+                                mui.alert('copy image fail:' + e.message); 
+                            }); 
+                    }); 
+                }, function(e) { 
+                    mui.alert("get _www folder fail"); 
+                }) 
+            }, function(e) { 
+            	mui.alert("读取拍照文件错误：" + e.message);
+            }); 
+        }, function(a) {}, { 
+            filter: "image" 
+        }) 
+    }; 
+    
+    //上传图片 
+    function uploadHead(imgPath) {  	
+        var image = new Image(); 
+        image.src = imgPath; 
+        image.onload = function() { 
+        var imgData = getBase64Image(image);         
+        mui.alert(imgData);
+        
+        mui.ajax(url+'/goods/uploadImg',{ 
+	        data: { 
+	             imgData:imgData
+	        }, 
+	        dataType: 'jsonp', 
+	        type: 'post', 
+	        timeout: 12000, 
+	        success: function(data) { 
+	            mui.toast('上传成功'); 
+	        },
+	        error: function() { 
+	            mui.toast('网络异常，请稍后再试！'); 
+	        } 
+	    }); 
+        } 
+    } 
+    //将图片压缩转成base64 
+    function getBase64Image(img) { 
+        var canvas = document.createElement("canvas"); 
+        var width = img.width; 
+        var height = img.height; 
+        // calculate the width and height, constraining the proportions 
+        if (width > height) { 
+            if (width > 200) { 
+                height = Math.round(height *= 200 / width); 
+                width = 200; 
+            } 
+        } else { 
+            if (height > 200) { 
+                width = Math.round(width *= 200 / height); 
+                height = 200; 
+            } 
+        } 
+        canvas.width = width;   /*设置新的图片的宽度*/ 
+        canvas.height = height; /*设置新的图片的长度*/ 
+        var ctx = canvas.getContext("2d"); 
+        ctx.drawImage(img, 0, 0, width, height); /*绘图*/ 
+        var dataURL = canvas.toDataURL("image/png", 0.8); 
+        return dataURL.replace("data:image/png;base64,", ""); 
+    }    
+
+	
 
 	</script>
 
