@@ -60,9 +60,7 @@
 		"Invocation": {
 			"description": "使用Native.js能力"
 		},
-		"Messaging": {
-			"description": "访问通讯能力"
-		},
+		
 		"Orientation": {
 			"description": "访问方向感应器"
 		},
@@ -164,8 +162,6 @@
 					}
 				},
 				"android": {
-					"mdpi": "unpackage/res/icons/48x48.png", /*普通屏程序图标，分辨率：48x48*/
-					"ldpi": "unpackage/res/icons/48x48.png", /*大屏程序图标，分辨率：48x48*/
 					"hdpi": "unpackage/res/icons/72x72.png", /*高分屏程序图标，分辨率：72x72*/
 					"xhdpi": "unpackage/res/icons/96x96.png",/*720P高分屏程序图标，分辨率：96x96*/
 					"xxhdpi": "unpackage/res/icons/144x144.png"
@@ -174,27 +170,19 @@
 			"splashscreen": {
 				"ios": {
 					"iphone": {
-						"default": "", /*iPhone3启动图片选，分辨率：320x480*/
-						"retina35": "",/*3.5英寸设备(iPhone4)启动图片，分辨率：640x960*/
+
 						"retina40": ""
 					},
 					"ipad": {
 						"portrait": "", /*iPad竖屏启动图片，分辨率：768x1004*/
-						"portrait-retina": "",/*iPad高分屏竖屏图片，分辨率：1536x2008*/
+						/*iPad高分屏竖屏图片，分辨率：1536x2008*/
 						"landscape": "", /*iPad横屏启动图片，分辨率：1024x748*/
-						"landscape-retina": "", /*iPad高分屏横屏启动图片，分辨率：2048x1496*/
-						"portrait7": "", /*iPad iOS7竖屏启动图片，分辨率：768x1024*/
-						"portrait-retina7": "",/*iPad iOS7高分屏竖屏图片，分辨率：1536x2048*/
-						"landscape7": "", /*iPad iOS7横屏启动图片，分辨率：1024x768*/
-						"landscape-retina7": ""
+						 /*iPad高分屏横屏启动图片，分辨率：2048x1496*/
+						"portrait7": ""
 					}
 				},
 				"android": {
-					"mdpi": "E:/图片/猫咪/QQ图片20150506174256.png", /*普通屏启动图片，分辨率：240x282*/
-					"ldpi": "E:/图片/猫咪/QQ图片20150506174256.png", /*大屏启动图片，分辨率：320x442*/
-					"hdpi": "E:/图片/猫咪/QQ图片20150506174256.png", /*高分屏启动图片，分辨率：480x762*/
-					"xhdpi": "E:/图片/猫咪/QQ图片20150506174256.png", /*720P高分屏启动图片，分辨率：720x1242*/
-					"xxhdpi": "E:/图片/猫咪/QQ图片20150506174256.png"
+					"hdpi":"D:/HBuilder/configuration/org.eclipse.osgi/bundles/81/1/.cp/icons/hbuilder/android/splash480x762.png","xhdpi":"D:/HBuilder/configuration/org.eclipse.osgi/bundles/81/1/.cp/icons/hbuilder/android/splash720x1242.png","xxhdpi":"D:/HBuilder/configuration/org.eclipse.osgi/bundles/81/1/.cp/icons/hbuilder/android/splash1080x1882.png"
 				}
 			}
 		}
