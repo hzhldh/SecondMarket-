@@ -66,8 +66,10 @@
 					<input type="text" class="mui-input-speech mui-input-clear" id="description" placeholder="语音输入">
 				</div>	
 				
-				<h5 class="mui-content-padded">拍照或选择图片上传</h5>
-				<button type="button" class="mui-btn mui-btn-outlined" id="addImage">添加</button>
+				<h5 class="mui-content-padded">拍照或选择图片上传</h5>		
+				<button type="button" class="mui-btn mui-btn-outlined" id="addImage">添加图片</button>
+				<!--预览图片-->
+			    <img id="previewImg" src=""/>
 							
 				<h5 class="mui-content-padded">新旧程度</h5>
 				<select class="mui-btn mui-btn-block" id="old_degree">
@@ -90,6 +92,8 @@
 					<button type="button" class="mui-btn mui-btn-danger" onclick="return false;">取消</button>
 				</div>
 			</form>
+		
+			</div>
 					
 		</div>	
 			
@@ -97,8 +101,9 @@
 	<script src="../js/mui.min.js"></script>
 	<script type="text/javascript" src="../jquery/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript">
-	mui.init()
+	mui.init();
 	var url = getUrl(); 
+	var imgData="";//全局变量，添加图片的base64码
 	
 	//判断是否已经登录
 	mui.plusReady(function() {//PC端不执行
@@ -111,13 +116,23 @@
 	
 	function check(){ 
 		if(localStorage.getItem("loginUser")!=null){
-        		publish();
-        	}else{
-        		mui.toast("您还未登录，不能发布信息");
-        	}
+			if($("#goods_name").val()==""){
+				mui.toast("物品名称不能为空");
+			}else if($("#original_price").val()==""||$("#second_price").val()==""){
+				mui.toast("价格不能为空");
+			}else if(isNaN($("#original_price").val())||isNaN($("#second_price").val())){
+				$("#original_price").val("");
+				$("#second_price").val("");
+				mui.toast("价格必须为数字");
+			}else{
+				publish();//执行发布
+			}
+    	}else{
+    		mui.toast("您还未登录，不能发布信息");
+    	}
 	}
 	
-	/*测试提交*/
+	/*提交发布*/
 	function publish(){ 
 		var publisher=$.parseJSON(localStorage.getItem('loginUser')).username;
 		mui.ajax(url+'/goods/addGoods',{ 
@@ -127,7 +142,7 @@
 	             publisher:publisher,
 	             description:$("#description").val(),
 	             type:$("#type").val(),
-	             goods_img:"test.jpg",
+	             goods_img:imgData,
 	             original_price:$("#original_price").val(),
 	             second_price:$("#second_price").val(),
 	             old_degree:$("#old_degree").val()
@@ -135,16 +150,15 @@
 	        dataType: 'jsonp', 
 	        type: 'post', 
 	        timeout: 12000, 
-	        success: function(data) { 
+	        success: function(data) { 	
 	            mui.toast('发布成功'); 
+	           // imgData="";//清空图片数据
 	        },
 	        error: function() { 
 	            mui.toast('网络异常，请稍后再试！'); 
 	        } 
 	    }); 
 	}
-	
-	
 
 	/*点击添加按钮触发弹窗*/ 
 	document.getElementById('addImage').addEventListener('tap', function() { 
@@ -172,8 +186,7 @@
 	                    break; 
 	            } 
 	        }) 
-	    } 
-	 
+	    } 	 
 	}, false); 		
 	
     
@@ -183,7 +196,8 @@
         c.captureImage(function(e) { 
             plus.io.resolveLocalFileSystemURL(e, function(entry) { 
                 var s = entry.toLocalURL() + "?version=" + new Date().getTime(); 
-                uploadHead(s); /*上传图片*/ 
+                //uploadHead(s); /*上传图片*/ 
+                savaImgData(s);//获取imgData
             }, function(e) { 
                  mui.alert(e.message);
             }); 
@@ -205,7 +219,7 @@
                             console.log("file remove success"); 
                             entry.copyTo(root, 'head.png', function(e) { 
                                     var e = e.fullPath + "?version=" + new Date().getTime(); 
-                                    uploadHead(e); /*上传图片*/ 
+                                    savaImgData(e); /*上传图片*/ 
                                     //变更大图预览的src 
                                     //目前仅有一张图片，暂时如此处理，后续需要通过标准组件实现 
                                 }, 
@@ -219,7 +233,7 @@
                         //文件不存在 
                         entry.copyTo(root, 'head.png', function(e) { 
                                 var path = e.fullPath + "?version=" + new Date().getTime(); 
-                                uploadHead(path); /*上传图片*/ 
+                                savaImgData(path); /*上传图片*/ 
                             }, 
                             function(e) { 
                                 mui.alert('copy image fail:' + e.message); 
@@ -236,36 +250,24 @@
         }) 
     }; 
     
-    //上传图片 
-    function uploadHead(imgPath) {  	
-        var image = new Image(); 
+    //获取imgData，并预览
+    function savaImgData(imgPath){
+    	var image = new Image(); 
         image.src = imgPath; 
         image.onload = function() { 
-        var imgData = getBase64Image(image);         
-        mui.alert(imgData);
-        
-        mui.ajax(url+'/goods/uploadImg',{ 
-	        data: { 
-	             imgData:imgData
-	        }, 
-	        dataType: 'jsonp', 
-	        type: 'post', 
-	        timeout: 12000, 
-	        success: function(data) { 
-	            mui.toast('上传成功'); 
-	        },
-	        error: function() { 
-	            mui.toast('网络异常，请稍后再试！'); 
-	        } 
-	    }); 
-        } 
-    } 
+        imgData = getBase64Image(image);//图片的base64码       
+   
+        var newSrc="data:image/jpg;base64,"+imgData;
+        $("#previewImg").attr('src',newSrc);//界面预览该图片
+        }
+    }   
+    
     //将图片压缩转成base64 
     function getBase64Image(img) { 
         var canvas = document.createElement("canvas"); 
         var width = img.width; 
         var height = img.height; 
-        // calculate the width and height, constraining the proportions 
+        //计算宽度和高度, 约束比例
         if (width > height) { 
             if (width > 200) { 
                 height = Math.round(height *= 200 / width); 
@@ -284,8 +286,6 @@
         var dataURL = canvas.toDataURL("image/png", 0.8); 
         return dataURL.replace("data:image/png;base64,", ""); 
     }    
-
-	
 
 	</script>
 
