@@ -673,6 +673,13 @@ body {
 	float: left;
 	padding-top: 10px;
 }
+.wu-pubtime {
+	height: 40px;
+	width: 130px;
+	color: red;
+	float: right;
+	padding-top: 10px;
+}
 
 .Settlement {
 	position: fixed;

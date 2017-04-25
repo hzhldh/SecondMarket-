@@ -1,6 +1,6 @@
 /*定义全局常量*/
-var url = "http://192.168.24.43:8080/SecondMarketServer";    
-//var url = "http://123.56.217.249:8081/SecondMarketServer";    
+//var url = "http://192.168.24.43:8080/SecondMarketServer";    
+var url = "http://123.56.217.249:8081/SecondMarketServer";    
 function getUrl(){    
   return url;    
 }  
