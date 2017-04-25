@@ -71,9 +71,17 @@
         } 
     });
 
-    //给新生成的元素添加点击事件,返回物品id
+    //给新生成的元素添加点击事件,跳转到详情页，并传递物品id
 	$(document).on('click', '.wu-find-txt-img', function(e) {
-	  mui.alert($(this).attr("id"));	
+		var goods_id=$(this).attr("id");
+		mui.openWindow({
+		    url:'../StoreFile/ProductDetails.html',
+		    id:'ProductDetails',
+		    extras:{
+		        goods_id:goods_id
+		    }
+		});
+
 	});
 			
 		

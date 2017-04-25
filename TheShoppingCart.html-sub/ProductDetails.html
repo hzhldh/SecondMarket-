@@ -9,9 +9,18 @@
 	</head>
 
 	<body>
+		123
 		<script src="../js/mui.min.js"></script>
 		<script type="text/javascript">
 			mui.init()
+			
+			mui.plusReady(function () {
+				var self = plus.webview.currentWebview();
+                var goods_id = self.goods_id;
+                mui.alert(goods_id);
+				
+})
+			
 		</script>
 	</body>
 

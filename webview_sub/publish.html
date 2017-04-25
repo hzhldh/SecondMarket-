@@ -152,7 +152,11 @@
 	        timeout: 12000, 
 	        success: function(data) { 	
 	            mui.toast('发布成功'); 
-	           // imgData="";//清空图片数据
+	            //跳转到发现页面
+	            mui.openWindow({
+		      		url:'find.html',
+		      		id:'find'
+		      	});
 	        },
 	        error: function() { 
 	            mui.toast('网络异常，请稍后再试！'); 
