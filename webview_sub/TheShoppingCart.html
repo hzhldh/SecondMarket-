@@ -12,22 +12,17 @@
 
 	<body>
 		<header class="mui-bar mui-bar-nav" id="chakan">
-			<div class="wu_title">购物车
-				<span style="font-size: 12px; font-weight: 100;" id="region">湖南</span>
-				<span style="height: 25px; width:15px ; display: inline-block; margin-left: -5px;"><img src="../img/xia_la.png" style="width: 100%;"/></span>
-				<a class="wu-a-right" style="color: #000; font-weight: 100;" id="">编辑</a>
-			</div>
+			<div class="wu_title">购物车</div>
 		</header>
 		<div class="mui-content" style="background-color: white; display: none;" id="notLogged">
 			<div class="wu-txt-conten" style="margin-top: 20px;">
-				亲你还未
-				<a href="#">登录</a>！，登录后才能加入购物车
+				亲您还未<a href="#">登录</a>！，登录后才能加入购物车
 			</div>
 			<div class="" style="padding: 20px;">
 				<button type="button" class="mui-btn-block" style="background-color: orangered; border: none; color: white;" id="pleaseLog">请登录</button>
 			</div>
 		</div>
-		<div class="mui-content" id="alreadyLogged" style="display: none;">
+		<!--<div class="mui-content" id="alreadyLogged">
 			<div class="wu-stroll" id="noShopping">
 				<div class="wu-stroll-left" id="goShopping">
 					<div class="" style="height: 45px; width: 45px; padding: 8px; float: left;"><img src="../img/gou_wu_che/zu_ji.png" style="width: 100%;" /></div>
@@ -38,242 +33,130 @@
 					<div style="height: 45px; line-height: 45px; float: left;" id="">我的收藏</div>
 				</div>
 			</div>
-		</div>
-		<div class="mui-content" id="shoppingCart" style="display: none;">
+		</div>-->
+		<div class="mui-content" id="shoppingCart">
 			<div class="wu-Settlement" id="shuanchu">
-				<div class="wu-Select">
-					<div class="wu-Select-style" id="Select">
-
-					</div>
-					<div class="wu-select-txt">全选</div>
-				</div>
 				<div class="wu-btn-Settlement" id="Settlement">
-					结算(<span id="jiesuan">0</span>)
+					结算
 				</div>
 				<div class="wu-Total">
 					<label style="font-size: 12px; color: #888;">合计:</label> ￥
 					<span style="color: red;" id="Total">0.00</span>
 				</div>
-			</div>
+			</div>	
 			<!--结算结束-->
-			<div style="width: 100%; padding-bottom: 65px;" id="addThat">
-
+			
+			<div style="width: 100%; padding-bottom: 65px;" id="CartList">
+				   <!--静态布局原型-->
+					<div class='wu-Asingle' id='1'>
+						<div class='wu-Asingle-header'>
+							<div class='mui-input-row mui-checkbox mui-left'><label>小米6S</label><input onclick='Selected(this)' id='check' type='checkbox'>
+							</div>
+						</div>
+						<div class='wu-Asingle-content'>
+							<div class='wu-Asingle-content-img'><img class='imgSrc' src='http://192.168.24.43:8080/SecondMarketServer/img/goodsImg/2017-04-24-172648-819.jpg' alt="1" style='width: 100%; height: 100%;'/></div>
+							<div class='wu-Asingle-content-attribute'>
+								<div class='wu-content-header mui-ellipsis' id='Title'>
+								<p>二手价：￥<span>10.00<span></p>
+								<p>愿出价：￥<input type="text" style="width: 120px;height: 25px;"/></p>	
+								</div>
+								<div class='wu-Asingle-delete' onclick='deleteMe(this)'></span><img src='../img/gou_wu_che/delete.png' style='width: 100%' /></div>
+							</div>
+						</div>
+						<div class='wu-Asingle-Total'><label style="float: left;">状态：<span class="status">有效</span></label> <label>发布来源：<span>出售</span><label>		
+						</div>
+					</div>
+					<!--<div class='wu-Asingle' id='1'><div class='wu-Asingle-header'><div class='mui-input-row mui-checkbox mui-left'><label>小米6S</label><input onclick='Selected(this)' id='check' type='checkbox'></div></div>
+					<div class='wu-Asingle-content'><div class='wu-Asingle-content-img'><img class='imgSrc' src='http://192.168.24.43:8080/SecondMarketServer/img/goodsImg/2017-04-24-172648-819.jpg' alt='1' style='width: 100%;height: 100%;'/></div>
+					<div class='wu-Asingle-content-attribute'><div class='wu-content-header mui-ellipsis' id='Title'><p>二手价：￥<span>10.00<span></p><p>愿出价：￥<input type='text' style='width: 120px;height: 25px;'/></p></div>
+					<div class='wu-Asingle-delete' onclick='deleteMe(this)'></span><img src='../img/gou_wu_che/delete.png' style='width: 100%' /></div></div></div>
+					<div class='wu-Asingle-Total'><label style='float: left;'>状态：<span class='status'>有效</span></label> <label>发布来源：<span>出售</span><label></div></div>-->
+					
 			</div>
 		</div>
-		<!--<button type="button" class="mui-btn-block" id="sssss">山粗</button>-->
 	</body>
-	<script src="../js/mui.min.js"></script>
-	<script type="text/javascript" src="../jquery/jquery-1.9.1.js"></script>
+	<script src='../js/mui.min.js"></script>
+	<script type="text/javascript" src="../jquery/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript">
-		mui.init()
-		var url = "http://139.196.196.64/s.asmx";
-		var num = 0;
-		document.getElementById("pleaseLog").addEventListener("tap", function() {
-			mui.openWindow({
-				url: '../signIn.html',
-				id: 'signIn'
-			});
+	mui.init()
+	var url = getUrl(); 
+	var username="hzh";
+	var shopping_id=0;
+	var several = 0;//选中结算的个数
+	
+	//根据物品编号从服务器请求页面数据
+    mui.ajax(url+'/shoppingCar/selectCarByName',{ 
+		data: { 
+			username:username
+		}, 
+		dataType: 'jsonp', 
+		type: 'post', 
+		timeout: 12000, 
+		success: function(data) { 	
+		    var json=$.parseJSON(data);//字符串转换为Json对象
+		    //alert(json[0].goods.goods_img);
+		},
+		error: function() { 
+		    mui.toast('网络异常，请稍后再试！'); 
+		} 
+    });
+	
+	
+	//请您登陆
+	document.getElementById("pleaseLog").addEventListener("tap", function() {
+		mui.openWindow({
+			url: '../signIn.html',
+			id: 'signIn'
+		});
+	});
+	
+	//发起结算
+	document.getElementById("Settlement").addEventListener("tap", function() {
+		var status= $("#" + shopping_id + "").find('span[class="status"]').html();//获取选中物品状态
+		if(isNaN($("#Total").html())){
+			mui.alert("出价必须为数字");
+		}else if(status!="有效"){
+			mui.alert("该物品已失效");
+		}else{
+			alert("结算金额："+$("#Total").html()+"购物id"+shopping_id);
+		}		
+	});
+	
+	//点击图片跳转到详情页
+	$(document).on('click', '.imgSrc', function(e) {
+		//图片alt属性为
+		var goods_id=$(this).attr("alt");
+		mui.openWindow({
+		    url:'../StoreFile/ProductDetails.html',
+		    id:'ProductDetails',
+		    extras:{
+		        goods_id:goods_id
+		    }
 		});
 
-		mui.plusReady(function() {
-			if(plus.storage.getItem('userName') == null) {
-				document.getElementById("notLogged").style.display = "block";
-				document.getElementById("alreadyLogged").style.display = "none";
-				document.getElementById("addThat").style.display = "none";
-				return false;
-			} else {
-				getAjax(url + "/SelectAll", {
-						id: 'www',
-						table: 'shoppingCartInformation'
-					},
-					function(a) {
-						var myUserID = plus.storage.getItem('sopUserID');
-						var ojp = JSON.parse(a);
-						for(var i = 0; i < ojp.length; i++) {
-							var ID = ojp[i].shoppingID;
-							if(ojp[i].sopUserID == myUserID) {
-								num++;
-								document.getElementById("notLogged").style.display = "none";
-								document.getElementById("alreadyLogged").style.display = "none";
-								document.getElementById("shoppingCart").style.display = "block";
-								$("#addThat").prepend("<div class='wu-Asingle' id='vvvvv'>" +
-									"<div class='wu-Asingle-header'>" +
-									"<div class='mui-input-row mui-checkbox mui-left'>" + "<label>当当网</label>" + "<input onclick='Selected(this)' id='check" + i + "' type='checkbox'>" + "<span id='bianhao' style='display: none;'></span>" + "</div>" +
-									"</div>" +
-									"<div class='wu-Asingle-content'>" +
-									"<div class='wu-Asingle-content-img'>" + "<img id='imgSrc' src='' style='width: 100%; height: 100%;' />" + "</div>" +
-									"<div class='wu-Asingle-content-attribute'>" +
-									"<div class='wu-content-header mui-ellipsis' id='Title'></div>" +
-									"<div class='wu-content-price'>" + "￥" + "<sapn id='Price'></span>" + "</div>" +
-									"<div class='wu-content-Number'>" + "<span id='calNumber2' style='display: none;'></span>" + "<span onclick='Meiosis(this)'>－</span>" + "<span id='Number'></span>" + "<span onclick='Addend(this)'>＋</span>" + "<span id='calNumber' style='display: none;'></span>" + "</div>" +
-									"<div class='wu-Asingle-delete' onclick='deleteMe(this)'>" + "<span id='comNumber' style='display: none;'></span>" + "<img src='../img/gou_wu_che/delete.png' style='width: 100%' />" + "</div>" +
-									"</div>" +
-									"</div>" +
-									"<div class='wu-Asingle-Total'>" + "<label>小计:<label>" + "￥" + "<span id='Subtotal'>0.00<span>" + "</div>" +
-									"</div>");
+	});
+			
+	//删除购物车商品
+	function deleteMe(event) { 
+		var del_id = event.parentNode.parentNode.parentNode.id; //获取父节点的shopping_id
+		alert("删除的购物id:"+del_id);
+		if(confirm("你确认删除吗？")) {
+			
+		} else {
+		
+		}
 
-								document.getElementById("imgSrc").src = ojp[i].imgSrc;
-								document.getElementById("Title").innerHTML = ojp[i].bookName;
-								var myPrice = document.getElementById("Price").innerHTML = ojp[i].price;
-								var myNumber = document.getElementById("Number").innerHTML = ojp[i].sopNumber;
-								document.getElementById("comNumber").innerHTML = ojp[i].sopBookID;
-								document.getElementById("calNumber").innerHTML = ojp[i].sopBookID;
-								document.getElementById("calNumber2").innerHTML = ojp[i].sopBookID;
-								document.getElementById("Subtotal").innerHTML = myNumber * myPrice;
-								document.getElementById("bianhao").innerHTML = ojp[i].sopBookID;
-							} else {
+    }
 
-							}
-						}
 
-						if(num == 0) {
-							document.getElementById("notLogged").style.display = "none";
-							document.getElementById("alreadyLogged").style.display = "block";
-							document.getElementById("shoppingCart").style.display = "none";
-						}
-						document.getElementById("jiesuan").innerHTML=several;
+//		document.getElementById("goShopping").addEventListener("tap", function() {
+//			mui.openWindow({
+//				url: '../StoreFile/shop.html',
+//				id: 'StoreFile/shop.html'
+//			})
+//		});
 
-					},
-					function(e) {}
-				)
-			}
 
-		});
-
-		//		document.getElementById("chakan").addEventListener("tap", function() { //查询所有书籍
-		//			getAjax(url + "/SelectAll", { //调用公共函数
-		//					id: 'www',
-		//					table: 'orderForm',
-		//				},
-		//				function(a) { //成功回调函数
-		//					alert(a);
-		//				},
-		//				function(d) { //失败回调函数
-		//					alert(d);
-		//				})
-		//		});
-
-		var oncick = true;
-		document.getElementById("Select").addEventListener("tap", function() {
-			var jiegou = document.getElementById("addThat");
-			var myTotal = document.getElementById("Total").innerHTML;
-			var parTotal = parseInt(myTotal);
-			if(oncick == true) {
-				for(var i = 0; i < jiegou.childNodes.length - 1; i++) {
-					var myChecked = jiegou.childNodes[i].childNodes[0].childNodes[0].childNodes[1]; //获取checked的状态
-					oncick = false;
-					document.getElementById("Select").className = "wu-Select-style1";
-					if(myChecked.checked == true) {
-						continue;
-					} else {
-						myChecked.checked = true;
-						Selected(myChecked);
-					}
-				}
-			} else {
-				for(var i = 0; i < jiegou.childNodes.length - 1; i++) {
-					var myChecked = jiegou.childNodes[i].childNodes[0].childNodes[0].childNodes[1]; //获取checked的状态
-					oncick = true;
-					document.getElementById("Select").className = "wu-Select-style";
-					if(myChecked.checked == false) {
-						continue;	
-					} else {
-						myChecked.checked = false;
-						Selected(myChecked);
-					}
-
-				}
-			}
-
-		});
-
-		document.getElementById("Settlement").addEventListener("tap", function() {
-			var myordUserID = plus.storage.getItem("sopUserID");
-			var bankNote = document.getElementById("Total").innerHTML;
-			var parNote = parseFloat(bankNote);
-			var jiegou = document.getElementById("addThat");
-			for(var i = 0; i < jiegou.childNodes.length - 1; i++) {
-				var myCheID = jiegou.childNodes[i].childNodes[0].childNodes[0].childNodes[1].id; //获取checked的ID
-				var myChecked = jiegou.childNodes[i].childNodes[0].childNodes[0].childNodes[1]; //获取checked的状态
-				var myImgSrc = jiegou.childNodes[i].childNodes[1].childNodes[0].childNodes[0].src; //获取图片路径
-				var myBookName = jiegou.childNodes[i].childNodes[1].childNodes[1].childNodes[0].innerHTML; //获取书籍名称
-				var myPrice = jiegou.childNodes[i].childNodes[1].childNodes[1].childNodes[1].childNodes[1].innerHTML; //获取价格
-				var myNumber = jiegou.childNodes[i].childNodes[1].childNodes[1].childNodes[2].childNodes[2].innerHTML; //获取数量
-				var mySubtotal = jiegou.childNodes[i].childNodes[2].childNodes[0].childNodes[1].childNodes[1].innerHTML; //获取小计
-				var myCommodityID = jiegou.childNodes[i].childNodes[0].childNodes[0].childNodes[2].innerHTML; //商品ID
-				if(myChecked.checked == true) {
-					getAjax(url + "/Insert", {
-							id: 'www',
-							table: 'orderForm',
-							values: JSON.stringify({
-								orderID: 1,
-								orderNumber: 313546546545,
-								orderStatus: 0,
-								ordUserID: myordUserID,
-								ordCommodityID: myCommodityID,
-								ordImgSrc: myImgSrc,
-								ordBookName: myBookName,
-								ordPrice: myPrice,
-								ordNumber: myNumber,
-								ordSubtotal: mySubtotal,
-								ordTotal: parNote
-							})
-						},
-						function(muv) {
-							mui.toast("成功");
-
-						},
-						function(ev) {
-							mui.toast("失败了");
-						}
-					)
-					getAjax(url + "/Delete", { //调用公共函数
-							id: 'www',
-							table: 'shoppingCartInformation',
-							key: 'sopBookID',
-							value: myCommodityID
-						},
-						function(a) { //成功回调函数
-							mui.toast("    成功         ");
-						},
-						function(d) { //失败回调函数
-							alert(d + "失败");
-						})
-				}
-			}
-			if(parNote == 0) {
-				return false;
-			} else {
-				mui.openWindow({
-					url: '../StoreFile/orderPage.html',
-					id: 'StoreFile/orderPage.html'
-				})
-			}
-
-		});
-
-		document.getElementById("goShopping").addEventListener("tap", function() {
-			mui.openWindow({
-				url: '../StoreFile/shop.html',
-				id: 'StoreFile/shop.html'
-			})
-		});
-
-		//		document.getElementById("sssss").addEventListener("tap", function() { //删除书籍
-		//			getAjax(url + "/Delete", { //调用公共函数
-		//					id: 'www',
-		//					table: 'orderForm',
-		//					key: 'orderID',
-		//					value: 0
-		//				},
-		//				function(a) { //成功回调函数
-		//					alert(a);
-		//					alert("ffff");
-		//				},
-		//				function(d) { //失败回调函数
-		//					alert(d);
-		//				})
-		//		});
 	</script>
 
 </html>

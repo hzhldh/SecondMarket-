@@ -11,15 +11,33 @@
 	<body>
 		123
 		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript" src="../js/j_s.js"></script>
+		<script type="text/javascript" src="../jquery/jquery-1.9.1.min.js"></script>
 		<script type="text/javascript">
 			mui.init()
 			
-			mui.plusReady(function () {
-				var self = plus.webview.currentWebview();
-                var goods_id = self.goods_id;
-                mui.alert(goods_id);
-				
-})
+			var url = getUrl(); 
+			var username="hzh";
+
+            //根据物品编号从服务器请求页面数据
+            mui.ajax(url+'/shoppingCar/selectCarByName',{ 
+	        data: { 
+	        	username:username
+	        }, 
+	        dataType: 'jsonp', 
+	        type: 'post', 
+	        timeout: 12000, 
+	        success: function(data) { 	
+	            var json=$.parseJSON(data);//字符串转换为Json对象
+	            alert(json[0].goods.goods_name);
+	        },
+	        error: function() { 
+	            mui.toast('网络异常，请稍后再试！'); 
+	        } 
+	    });
+            
+            
+
 			
 		</script>
 	</body>
