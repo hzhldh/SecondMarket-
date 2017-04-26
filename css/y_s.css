@@ -1,4 +1,4 @@
-* {
+wu-content-headerf* {
 	margin: 0px;
 	padding: 0px;
 	font-size: 15px;
@@ -492,8 +492,8 @@ body {
 
 .wu-content-header,
 .wu-content-price {
-	height: 25px;
-	line-height: 25px;
+/*	height: 35px;*/
+	line-height: 35px;
 	width: 100%;
 }
 
@@ -533,6 +533,7 @@ body {
 	border-top: 1px solid #D8D8D8;
 	text-align: right;
 	color: red;
+	font-size: 13px;
 }
 
 .wu-Asingle-Total label {
@@ -540,7 +541,7 @@ body {
 }
 
 .wu-Asingle-Total span {
-	color: red;
+	color: #904242;
 }
 
 .wu-Asingle-delete {

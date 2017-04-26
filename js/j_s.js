@@ -1,6 +1,6 @@
 /*定义全局常量*/
-//var url = "http://192.168.24.43:8080/SecondMarketServer";    
-var url = "http://123.56.217.249:8081/SecondMarketServer";    
+var url = "http://192.168.24.43:8080/SecondMarketServer";    
+//var url = "http://123.56.217.249:8081/SecondMarketServer";    
 function getUrl(){    
   return url;    
 }  
@@ -16,6 +16,46 @@ function sdee(event, vow) {
 		vow.style.color = "white";
 	}
 }
+
+function Selected(evenr) { //购物车选中物品事件	
+		if(evenr.checked == true){
+			/*选中数大于0则不让第二个选中*/				
+			if(several>0){
+				shopping_id = evenr.parentNode.parentNode.parentNode.id; //获取父节点的shopping_id
+				$("#" + shopping_id + "").find('input[type="checkbox"]').attr("checked", false);//不给第二个物品选中
+				mui.alert("暂不允许多选下单");
+			}else{
+				shopping_id = evenr.parentNode.parentNode.parentNode.id; //获取父节点的shopping_id
+				several++;
+				$("#" + shopping_id + "").find('div[class="wu-Asingle-content-attribute"]').find('input').bind('input propertychange', function() {  
+				   if($("#" + shopping_id + "").find('input[type="checkbox"]').is(":checked")){
+				   	$("#Total").html($(this).val());
+				   }else{
+				   	mui.alert("都没选你改啥");
+				   }
+				   
+				});  
+				
+				var final_price=$("#" + shopping_id + "").find('div[class="wu-Asingle-content-attribute"]').find('input').val();//获取填写的愿出价
+				$("#Total").html(final_price);					
+			}
+		}else {
+			$("#Total").html(0.00);
+			several--;				
+		}			
+		//选中数大于0变色
+		if(several>0){				
+			document.getElementById("Settlement").style.backgroundColor = "orangered"
+		}else{			
+			document.getElementById("Settlement").style.backgroundColor = "#ccc";
+		}
+	
+}
+
+
+
+
+
 
 function getAjax(url, datas, successcallback, errorcallback) { //被调用的函数
 	mui.ajax(url, { //mui.ajax是AJAX的规定前缀写法，后面的url是服务器的路径（库，表等等都在服务器内）
@@ -37,40 +77,7 @@ function setIten(key, value) { //被调用的函数
 	plus.storage.setItem(key, value); //存储键值对
 }
 
-function deleteMe(event) { //删除购物车商品
-	var myComNumber = event.innerHTML;
-	var subNumber = myComNumber.substring(44, 45);
-	var parNumber = parseInt(subNumber);
-	if(confirm("你确认删除吗？")) {
-		getAjax(url + "/Delete", { //调用公共函数
-				id: 'www',
-				table: 'shoppingCartInformation',
-				key: 'sopBookID',
-				value: parNumber
-			},
-			function(a) { //成功回调函数
-				location.reload();
-			},
-			function(d) { //失败回调函数
-				mui.toast("   失败      ")
-			})
-		getAjax(url + "/Delete", { //调用公共函数
-				id: 'www',
-				table: 'orderForm',
-				key: 'orderID',
-				value: parNumber
-			},
-			function(c) { //成功回调函数
-				location.reload();
-			},
-			function(d) { //失败回调函数
-				mui.toast("   失败      ")
-			})
-	} else {
 
-	}
-
-}
 var men;
 
 function Addend(even) { //商品加
@@ -119,53 +126,7 @@ function Meiosis(meng) { //商品减
 }
 var several = 0;
 
-function Selected(evenr) { //当当网选中和为选中的存值案例
-	if(evenr.checked == true) {
-        several++;
-		var myTime = new Date();
-		var myTotal = document.getElementById("Total").innerHTML;
-		var myBianhao = evenr.nextSibling.innerHTML; //商品ID号
-		var evrPar = evenr.parentNode.parentNode.parentNode; //获取父节点
-		var evrSubtotal = evrPar.childNodes[2].childNodes[0].childNodes[1].childNodes[1].innerHTML; //获取子节点
-		var evrPrice = evrPar.childNodes[1].childNodes[1].childNodes[1].childNodes[1].innerHTML; //获取价格
-		var evrName = evrPar.childNodes[1].childNodes[1].childNodes[0].innerHTML; //获取名称
-		var evrNumber = evrPar.childNodes[1].childNodes[1].childNodes[2].childNodes[2].innerHTML; //数量
-		var imgSrc = evrPar.childNodes[1].childNodes[0].childNodes[0].src; //图片路径
-		var parTotal = parseInt(myTotal); //总价1
-		var parSubtotal = parseInt(evrSubtotal); //小计价格
-		if(parTotal < 0) {
-			document.getElementById("Total").innerHTML = 0;
-		} else {
-			var zongjia = document.getElementById("Total").innerHTML = parTotal + parSubtotal;
-		}
-		var userNameID = plus.storage.getItem('sopUserID');
-		document.getElementById("jiesuan").innerHTML=several;
-	} else {
-		several--;
-		var myTime = new Date();
-		var myBianhao = evenr.nextSibling.innerHTML; //商品ID号
-		var myTotal = document.getElementById("Total").innerHTML;
-		var evrPar = evenr.parentNode.parentNode.parentNode;
-		var evrSubtotal = evrPar.childNodes[2].childNodes[0].childNodes[1].childNodes[1].innerHTML;
-		var parTotal = parseInt(myTotal); //总价
-		var parSubtotal = parseInt(evrSubtotal); //小计价格
-		if(parTotal < 0) {
-			document.getElementById("Total").innerHTML = 0;
-		} else {
-			document.getElementById("Total").innerHTML = parTotal - parSubtotal;
-		}
-		document.getElementById("jiesuan").innerHTML=several;
-	}
 
-	var bankNote = document.getElementById("Total").innerHTML;
-	var parNote = parseFloat(bankNote);
-	if(parNote == 0) {
-		document.getElementById("Settlement").style.backgroundColor = "#ccc";
-	} else {
-		document.getElementById("Settlement").style.backgroundColor = "orangered"
-	}
-
-}
 
 function deleteOrder(event) {
 	var evtOddNumbers = event.previousElementSibling.innerHTML;
