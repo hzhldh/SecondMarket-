@@ -22,22 +22,23 @@
 				<button type="button" class="mui-btn-block" style="background-color: orangered; border: none; color: white;" id="pleaseLog">请登录</button>
 			</div>
 		</div>
-		<!--<div class="mui-content" id="alreadyLogged">
+		<div class="mui-content" id="alreadyLogged" style="display: none;">
 			<div class="wu-stroll" id="noShopping">
+				<p style="text-align: center;">您的购物还没有添加物品</p>
 				<div class="wu-stroll-left" id="goShopping">
 					<div class="" style="height: 45px; width: 45px; padding: 8px; float: left;"><img src="../img/gou_wu_che/zu_ji.png" style="width: 100%;" /></div>
 					<div style="height: 45px; line-height: 45px; float: left; color: white;">去逛逛</div>
 				</div>
-				<div class="wu-stroll-right">
+				<div class="wu-stroll-right" id="goCollect">
 					<div class="" style="height: 45px; width: 45px; padding: 8px; float: left;"><img src="../img/gou_wu_che/shou_cang.png" style="width: 80%;" /></div>
 					<div style="height: 45px; line-height: 45px; float: left;" id="">我的收藏</div>
 				</div>
 			</div>
-		</div>-->
-		<div class="mui-content" id="shoppingCart">
+		</div>
+		<div class="mui-content" id="shoppingCart" style="display: none;"> 
 			<div class="wu-Settlement" id="shuanchu">
 				<div class="wu-btn-Settlement" id="Settlement">
-					结算
+					下单
 				</div>
 				<div class="wu-Total">
 					<label style="font-size: 12px; color: #888;">合计:</label> ￥
@@ -49,6 +50,7 @@
 			<div style="width: 100%; padding-bottom: 65px;" id="CartList">
 				   <!--静态布局原型-->
 					<!--<div class='wu-Asingle' id='1'>
+						<span class='publisher' style='display:none'>黄大爷</span>
 						<div class='wu-Asingle-header'>
 							<div class='mui-input-row mui-checkbox mui-left'><label>小米6S</label><input onclick='Selected(this)' type='checkbox'>
 							</div>
@@ -65,10 +67,7 @@
 						</div>
 						<div class='wu-Asingle-Total'><label style="float: left;">状态：<span class="status">有效</span></label> <label>发布来源：<span>出售</span><label>		
 						</div>
-					</div>-->
-					
-				
-					
+					</div>-->				
 			</div>
 		</div>
 	</body>
@@ -78,38 +77,56 @@
 <script type="text/javascript">
 	mui.init()
 	var url = getUrl(); 
-	var username="hzh";
 	var shopping_id=0;
 	var several = 0;//选中结算的个数
+	var loginUserMessage;
 	
-	
-	
-	
-	
-	//根据物品编号从服务器请求页面数据
-    mui.ajax(url+'/shoppingCar/selectCarByName',{ 
-		data: { 
-			username:username
-		}, 
-		dataType: 'jsonp', 
-		type: 'post', 
-		timeout: 12000, 
-		success: function(data) { 	
-		    var json=$.parseJSON(data);//字符串转换为Json对象
-		    $.each(json,function(index,domEle){
-		    var html="<div class='wu-Asingle' id='"+domEle.shopping_id+"'><div class='wu-Asingle-header'><div class='mui-input-row mui-checkbox mui-left'><label>"+domEle.goods.goods_name+"</label><input onclick='Selected(this)' type='checkbox'></div></div>";
-		    html +="<div class='wu-Asingle-content'><div class='wu-Asingle-content-img'><img class='imgSrc' src='"+url+"/img/goodsImg/"+domEle.goods.goods_img+"' alt='"+domEle.goods.goods_id+"' style='width: 100%;height: 100%;'/></div>";
-		    html +="<div class='wu-Asingle-content-attribute'><div class='wu-content-header mui-ellipsis'><p>二手价：￥<span>"+domEle.goods.second_price+"<span></p><p>愿出价：￥<input type='text' style='width: 120px;height: 25px;'/></p></div>";
-		    html +="<div class='wu-Asingle-delete' onclick='deleteMe(this)'></span><img src='../img/gou_wu_che/delete.png' style='width: 100%' /></div></div></div>";
-		    html +="<div class='wu-Asingle-Total'><label style='float: left;'>状态：<span class='status'>"+domEle.goods.goods_status+"</span></label> <label>发布来源：<span>"+domEle.goods.source_type+"</span><label></div></div>";
-		    $("#CartList").append(html);
+//	mui.plusReady(function() {//PC端不执行
+        if(localStorage.getItem("loginUser")!=null){		
+			document.getElementById("notLogged").style.display = "none"; 
+			mui.toast("登录");
+			//根据登录用户名从服务器请求页面数据
+			loginUserMessage=$.parseJSON(localStorage.getItem('loginUser'));//将用户信息转换为Json对象
+			var num=0;//记录该用户购物车物品数量
+	        mui.ajax(url+'/shoppingCar/selectCarByName',{ 		    	    	
+				data: { 
+					username:loginUserMessage.username
+				}, 
+				dataType: 'jsonp', 
+				type: 'post', 
+				timeout: 12000, 
+				success: function(data) { 	
+				    var json=$.parseJSON(data);//字符串转换为Json对象
+				    $.each(json,function(index,domEle){
+				    num++;
+				    var html="<div class='wu-Asingle' id='"+domEle.shopping_id+"'><span class='publisher' style='display:none'>"+domEle.goods.publisher+"</span><div class='wu-Asingle-header'><div class='mui-input-row mui-checkbox mui-left'><label>"+domEle.goods.goods_name+"</label><input onclick='Selected(this)' type='checkbox'></div></div>";
+				    html +="<div class='wu-Asingle-content'><div class='wu-Asingle-content-img'><img class='imgSrc' src='"+url+"/img/goodsImg/"+domEle.goods.goods_img+"' alt='"+domEle.goods.goods_id+"' style='width: 100%;height: 100%;'/></div>";
+				    html +="<div class='wu-Asingle-content-attribute'><div class='wu-content-header mui-ellipsis'><p>二手价：￥<span>"+domEle.goods.second_price+"<span></p><p>愿出价：￥<input type='text' style='width: 120px;height: 25px;'/></p></div>";
+				    html +="<div class='wu-Asingle-delete' onclick='deleteMe(this)'></span><img src='../img/gou_wu_che/delete.png' style='width: 100%' /></div></div></div>";
+				    html +="<div class='wu-Asingle-Total'><label style='float: left;'>状态：<span class='status'>"+domEle.goods.goods_status+"</span></label> <label>发布来源：<span>"+domEle.goods.source_type+"</span><label></div></div>";
+				    $("#CartList").append(html);		    
+				    });
+				    //判断用户购物车数量是否大于0
+				    if(num>0){
+				    	document.getElementById("shoppingCart").style.display = "block";
+				    }else{
+				    	document.getElementById("alreadyLogged").style.display = "block";
+				    }
+				},
+				error: function() { 
+				    mui.toast('网络异常，请稍后再试！'); 
+				} 
 		    });
-		},
-		error: function() { 
-		    mui.toast('网络异常，请稍后再试！'); 
-		} 
-    });
-	
+
+    	}else{
+    		//未登录情况下
+    		document.getElementById("notLogged").style.display = "block"; 
+    		document.getElementById("alreadyLogged").style.display = "none";
+    		document.getElementById("shoppingCart").style.display = "none";
+     		mui.toast("未登录");
+    	}
+//	});	
+
 	
 	//请您登陆
 	document.getElementById("pleaseLog").addEventListener("tap", function() {
@@ -119,9 +136,10 @@
 		});
 	});
 	
-	//发起结算
+	//下单
 	document.getElementById("Settlement").addEventListener("tap", function() {
 		var status= $("#" + shopping_id + "").find('span[class="status"]').html();//获取选中物品状态
+		var publisher=$("#" + shopping_id + "").find('span[class="publisher"]').html()//获取选择物品的发布人
 		if(isNaN($("#Total").html())){
 			mui.alert("出价必须为数字");
 		}else if($("#Total").html()==""){
@@ -131,7 +149,7 @@
 		}else if(status!="有效"){
 			mui.alert("该物品已失效");
 		}else{
-			alert("结算金额："+$("#Total").html()+"购物id"+shopping_id);
+			alert("结算金额："+$("#Total").html()+"购物id"+shopping_id+"publisher:"+publisher+"用户名："+loginUserMessage.username);
 		}		
 	});
 	
@@ -162,13 +180,25 @@
 
     }
 
+    //去逛逛
+	document.getElementById("goShopping").addEventListener("tap", function() {
+		mui.openWindow({
+			url: 'find.html',
+			id: 'find'
+		})
+	});
+	 //去我的收藏
+//	document.getElementById("goCollect").addEventListener("tap", function() {
+//		mui.openWindow({
+//			url: '../StoreFile/shop.html',
+//			id: 'StoreFile/shop.html'
+//		})
+//	});
 
-//		document.getElementById("goShopping").addEventListener("tap", function() {
-//			mui.openWindow({
-//				url: '../StoreFile/shop.html',
-//				id: 'StoreFile/shop.html'
-//			})
-//		});
+    //刷新页面
+	window.addEventListener("pageflowrefresh", function (e) {
+	    location.reload();
+	});
 </script>
 
 

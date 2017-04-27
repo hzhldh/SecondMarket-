@@ -105,10 +105,12 @@
 	<script type="text/javascript">
 		mui.init();
 		var url = getUrl(); 
+		var goods_id;
+	
 
 		mui.plusReady(function() {//PC端不执行
 			var self = plus.webview.currentWebview();
-            var goods_id = self.goods_id;
+            goods_id = self.goods_id;
             //根据物品编号从服务器请求页面数据
             mui.ajax(url+'/goods/selectGoodsDetails',{ 
 	        data: { 
@@ -158,49 +160,41 @@
 //		});
 
 
-//		document.getElementById("addShoppingCartMe").addEventListener("tap", function() {
-//			if(plus.storage.getItem('userName') == null) {
-//				mui.toast("    你还未登录        ");
-//				mui.openWindow({
-//					url:'../signIn.html',
-//					id:'signIn.html',
-//				});
-//				return false;
-//			} else {
-//				var myPrice = document.getElementById("aDiscount").innerHTML;
-//				var myBookName = document.getElementById("briefIntroduction").innerHTML;
-//				num++;
-//				if(num > 1) {
-//					mui.toast("    已用同类商品        ");
-//				} else {
-//					var strName = plus.storage.getItem('number');
-//					var strSopId = plus.storage.getItem('sopUserID');
-//					getAjax(url + "/Insert", {
-//							id: 'www',
-//							table: 'shoppingCartInformation',
-//							values: JSON.stringify({
-//								shoppingID: 1,
-//								sopBookID: strName,
-//								sopUserID: strSopId,
-//								bookName: myBookName,
-//								price: myPrice,
-//								imgSrc: srcImg,
-//								sopNumber: 1,
-//								state: 0
-//							})
-//						},
-//						function(e) {
-//							mui.toast("    加入成功        ");
-//						},
-//						function(p) {
-//							mui.toast("    网路不稳定        ");
-//						}
-//					)
-//
-//				}
-//			}
-//
-//		});
+		document.getElementById("addShoppingCartMe").addEventListener("tap", function() {
+			if(localStorage.getItem("loginUser") == null) {
+				mui.toast("    你还未登录        ");
+				mui.openWindow({
+					url:'../signIn.html',
+					id:'signIn.html',
+				});
+				return false;
+			} else {
+				var loginUserMessage=$.parseJSON(localStorage.getItem('loginUser'));
+	            mui.ajax(url+'/shoppingCar/addShoppingCar',{ 
+			        data: { 
+			        	goods_id:goods_id,
+			        	username:loginUserMessage.username
+			        }, 
+			        dataType: 'jsonp', 
+			        type: 'post', 
+			        timeout: 12000, 
+			        success: function(data) { 	
+			        	if (data=="0") {
+			        		mui.toast("添加成功 ");
+			        	}else if(data=="100"){
+			        		mui.toast("不能添加自己发布的物品 ");
+			        	}
+			        	else{
+			        		mui.toast("请勿重复添加 ");
+			        	}
+			        },
+			        error: function() { 
+			            mui.toast('网络异常，请稍后再试！'); 
+			        } 
+			    });
+			}
+
+		});
 		
 	</script>
 
