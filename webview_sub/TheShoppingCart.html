@@ -48,9 +48,9 @@
 			
 			<div style="width: 100%; padding-bottom: 65px;" id="CartList">
 				   <!--静态布局原型-->
-					<div class='wu-Asingle' id='1'>
+					<!--<div class='wu-Asingle' id='1'>
 						<div class='wu-Asingle-header'>
-							<div class='mui-input-row mui-checkbox mui-left'><label>小米6S</label><input onclick='Selected(this)' id='check' type='checkbox'>
+							<div class='mui-input-row mui-checkbox mui-left'><label>小米6S</label><input onclick='Selected(this)' type='checkbox'>
 							</div>
 						</div>
 						<div class='wu-Asingle-content'>
@@ -65,24 +65,26 @@
 						</div>
 						<div class='wu-Asingle-Total'><label style="float: left;">状态：<span class="status">有效</span></label> <label>发布来源：<span>出售</span><label>		
 						</div>
-					</div>
-					<!--<div class='wu-Asingle' id='1'><div class='wu-Asingle-header'><div class='mui-input-row mui-checkbox mui-left'><label>小米6S</label><input onclick='Selected(this)' id='check' type='checkbox'></div></div>
-					<div class='wu-Asingle-content'><div class='wu-Asingle-content-img'><img class='imgSrc' src='http://192.168.24.43:8080/SecondMarketServer/img/goodsImg/2017-04-24-172648-819.jpg' alt='1' style='width: 100%;height: 100%;'/></div>
-					<div class='wu-Asingle-content-attribute'><div class='wu-content-header mui-ellipsis' id='Title'><p>二手价：￥<span>10.00<span></p><p>愿出价：￥<input type='text' style='width: 120px;height: 25px;'/></p></div>
-					<div class='wu-Asingle-delete' onclick='deleteMe(this)'></span><img src='../img/gou_wu_che/delete.png' style='width: 100%' /></div></div></div>
-					<div class='wu-Asingle-Total'><label style='float: left;'>状态：<span class='status'>有效</span></label> <label>发布来源：<span>出售</span><label></div></div>-->
+					</div>-->
+					
+				
 					
 			</div>
 		</div>
 	</body>
-	<script src='../js/mui.min.js"></script>
-	<script type="text/javascript" src="../jquery/jquery-1.9.1.min.js"></script>
-	<script type="text/javascript">
+<script src="../js/mui.min.js"></script>
+<script type="text/javascript" src="../js/j_s.js"></script>
+<script type="text/javascript" src="../jquery/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">
 	mui.init()
 	var url = getUrl(); 
 	var username="hzh";
 	var shopping_id=0;
 	var several = 0;//选中结算的个数
+	
+	
+	
+	
 	
 	//根据物品编号从服务器请求页面数据
     mui.ajax(url+'/shoppingCar/selectCarByName',{ 
@@ -94,7 +96,14 @@
 		timeout: 12000, 
 		success: function(data) { 	
 		    var json=$.parseJSON(data);//字符串转换为Json对象
-		    //alert(json[0].goods.goods_img);
+		    $.each(json,function(index,domEle){
+		    var html="<div class='wu-Asingle' id='"+domEle.shopping_id+"'><div class='wu-Asingle-header'><div class='mui-input-row mui-checkbox mui-left'><label>"+domEle.goods.goods_name+"</label><input onclick='Selected(this)' type='checkbox'></div></div>";
+		    html +="<div class='wu-Asingle-content'><div class='wu-Asingle-content-img'><img class='imgSrc' src='"+url+"/img/goodsImg/"+domEle.goods.goods_img+"' alt='"+domEle.goods.goods_id+"' style='width: 100%;height: 100%;'/></div>";
+		    html +="<div class='wu-Asingle-content-attribute'><div class='wu-content-header mui-ellipsis'><p>二手价：￥<span>"+domEle.goods.second_price+"<span></p><p>愿出价：￥<input type='text' style='width: 120px;height: 25px;'/></p></div>";
+		    html +="<div class='wu-Asingle-delete' onclick='deleteMe(this)'></span><img src='../img/gou_wu_che/delete.png' style='width: 100%' /></div></div></div>";
+		    html +="<div class='wu-Asingle-Total'><label style='float: left;'>状态：<span class='status'>"+domEle.goods.goods_status+"</span></label> <label>发布来源：<span>"+domEle.goods.source_type+"</span><label></div></div>";
+		    $("#CartList").append(html);
+		    });
 		},
 		error: function() { 
 		    mui.toast('网络异常，请稍后再试！'); 
@@ -115,6 +124,10 @@
 		var status= $("#" + shopping_id + "").find('span[class="status"]').html();//获取选中物品状态
 		if(isNaN($("#Total").html())){
 			mui.alert("出价必须为数字");
+		}else if($("#Total").html()==""){
+			mui.alert("请先填写出价");
+		}else if(several<=0){
+			mui.alert("未选择结算物品");
 		}else if(status!="有效"){
 			mui.alert("该物品已失效");
 		}else{
@@ -124,15 +137,16 @@
 	
 	//点击图片跳转到详情页
 	$(document).on('click', '.imgSrc', function(e) {
-		//图片alt属性为
+		//图片alt属性为goods_id
 		var goods_id=$(this).attr("alt");
-		mui.openWindow({
-		    url:'../StoreFile/ProductDetails.html',
-		    id:'ProductDetails',
-		    extras:{
-		        goods_id:goods_id
-		    }
-		});
+		mui.alert(goods_id);
+//		mui.openWindow({
+//		    url:'../StoreFile/ProductDetails.html',
+//		    id:'ProductDetails',
+//		    extras:{
+//		        goods_id:goods_id
+//		    }
+//		});
 
 	});
 			
@@ -155,8 +169,7 @@
 //				id: 'StoreFile/shop.html'
 //			})
 //		});
+</script>
 
-
-	</script>
 
 </html>
