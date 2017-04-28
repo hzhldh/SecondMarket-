@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/y_s.css" />
+	</head>
+
+	<body onload="">
+
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">订单详情</h1>
+			<a class="mui-icon mui-icon-left-nav" id="closeID"></a>
+		</header>
+		
+		
+		<div class="mui-content">
+			<div class="wu-goodsReceipt" id="goodsReceipt">
+				<div class="wu-Consignee">
+					<div class="wu-Consignee_left">下单人：<span>愈进</span></div>
+					<div class="wu-Consignee_right">15707495309</div>
+				</div>
+				<div class="wu-address">
+					地&nbsp;&nbsp;址：<span>湖南长沙市江西</span>
+				</div>
+				<div class="wu-Postcode">
+					邮&nbsp;&nbsp;编：<span>465995</span>
+				</div>
+			</div>
+			
+			<div style="margin-bottom: 20px;">
+				<div class="wu-goodsReceipt" style="border: none; margin-bottom: 60px; box-shadow: 1px 1px 10px #DDDDDD; padding-top: 10px; height: 70px;">
+					<div class="wu-Consignee" style="height: 25px;">
+						<div class="wu-Consignee_left" style="height: 25px; line-height: 25px;">商品总金额：</div>
+						<div class="wu-Consignee_right" style="height: 25px; line-height: 25px;">￥<span></span></div>
+					</div>
+					<div class="wu-Consignee" style="height: 25px;">
+						<div class="wu-Consignee_left" style="height: 25px; line-height: 25px;">运费：</div>
+						<div class="wu-Consignee_right" style="height: 25px; line-height: 25px;">￥<span>23</span></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<nav class="mui-bar mui-bar-tab" style="padding: 0px 20px;">
+			<div class="wu-nav-left">
+				总额(含运费)<span style="color: red;font-size: 20px; font-weight: bold;">￥</span><span style="color: red;font-size: 18px; font-weight: bold;" id="totalAmount"></span>
+			</div>
+			<div class="wu-nav-right" id="placeOrder">
+				撤销订单
+			</div>
+		</nav>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/j_s.js"></script>
+	<script type="text/javascript" src="../jquery/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript">
+		mui.init()
+		
+		
+		document.getElementById("closeID").addEventListener("tap", function() {
+			var myClose = plus.webview.currentWebview();
+			plus.webview.close(myClose);
+		});
+
+		
+	</script>
+
+</html>

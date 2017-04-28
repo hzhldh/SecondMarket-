@@ -84,7 +84,6 @@
 //	mui.plusReady(function() {//PC端不执行
         if(localStorage.getItem("loginUser")!=null){		
 			document.getElementById("notLogged").style.display = "none"; 
-			mui.toast("登录");
 			//根据登录用户名从服务器请求页面数据
 			loginUserMessage=$.parseJSON(localStorage.getItem('loginUser'));//将用户信息转换为Json对象
 			var num=0;//记录该用户购物车物品数量
@@ -138,6 +137,7 @@
 	
 	//下单
 	document.getElementById("Settlement").addEventListener("tap", function() {
+		var goods_id=$("#" + shopping_id + "").find('img[class="imgSrc"]').attr("alt");//获取选中物品的id
 		var status= $("#" + shopping_id + "").find('span[class="status"]').html();//获取选中物品状态
 		var publisher=$("#" + shopping_id + "").find('span[class="publisher"]').html()//获取选择物品的发布人
 		if(isNaN($("#Total").html())){
@@ -149,7 +149,32 @@
 		}else if(status!="有效"){
 			mui.alert("该物品已失效");
 		}else{
-			alert("结算金额："+$("#Total").html()+"购物id"+shopping_id+"publisher:"+publisher+"用户名："+loginUserMessage.username);
+//			alert("结算金额："+$("#Total").html()+"购物id"+shopping_id+"publisher:"+publisher+"用户名："+loginUserMessage.username);
+            mui.ajax(url+'/order/addOrder',{ 		    	    	
+				data: { 
+					goods_id:goods_id,
+					publisher:publisher,
+					order_people:loginUserMessage.username,
+					final_price:$("#Total").html(),		
+					shopping_id:shopping_id
+				}, 
+				dataType: 'jsonp', 
+				type: 'post', 
+				timeout: 12000, 
+				success: function(data) { 	
+				    if(data=="-100"){				    	
+				    	mui.toast("下单失败");
+				    }else if(data=="-1"){
+				    	mui.toast("请勿重复下单");
+				    }else{
+				    	location.reload();
+				    	mui.toast("下单成功，订单编号："+data);
+				    }
+				},
+				error: function() { 
+				    mui.toast('网络异常，请稍后再试！'); 
+				} 
+		    });
 		}		
 	});
 	
@@ -157,23 +182,38 @@
 	$(document).on('click', '.imgSrc', function(e) {
 		//图片alt属性为goods_id
 		var goods_id=$(this).attr("alt");
-		mui.alert(goods_id);
-//		mui.openWindow({
-//		    url:'../StoreFile/ProductDetails.html',
-//		    id:'ProductDetails',
-//		    extras:{
-//		        goods_id:goods_id
-//		    }
-//		});
-
+		mui.openWindow({
+		    url:'../StoreFile/ProductDetails.html',
+		    id:'ProductDetails',
+		    extras:{
+		        goods_id:goods_id
+		    }
+		});
 	});
 			
 	//删除购物车商品
 	function deleteMe(event) { 
 		var del_id = event.parentNode.parentNode.parentNode.id; //获取父节点的shopping_id
-		alert("删除的购物id:"+del_id);
 		if(confirm("你确认删除吗？")) {
-			
+			mui.ajax(url+'/shoppingCar/delShoppingCar',{ 		    	    	
+				data: { 
+					shopping_id:del_id
+				}, 
+				dataType: 'jsonp', 
+				type: 'post', 
+				timeout: 12000, 
+				success: function(data) { 	
+				    if(data=="0"){				    	
+				    	location.reload();
+				    	mui.toast("删除成功");
+				    }else{
+				    	mui.toast("删除失败");
+				    }
+				},
+				error: function() { 
+				    mui.toast('网络异常，请稍后再试！'); 
+				} 
+		    });
 		} else {
 		
 		}
