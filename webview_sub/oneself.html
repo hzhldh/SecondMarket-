@@ -46,6 +46,16 @@
 		</div>
 		<!--wu-tou-top结束-->
 		<div class="" style="width: 100%; margin-bottom: 15px;box-shadow: 2px 2px 5px #ddd;">		
+			<div style="height: 45px; width: 100%; background-color: white; border-bottom: 1px solid #e8e8e8;margin-bottom: 12px;" id="MyCollect">
+				<div class="wu-Order-left" style="">
+					<div class="time_header_img"><img src="../img/gou_wu_che/mystore_my_asset_name_card.png" style="width: 100%;"></div>
+					<div class="time_header_txt">我的收藏</div>
+				</div>
+				<div class="wu-Order-right">
+					<div class="time_header_txt" style="font-size: 12px; color: #666;">查看我的收藏</div>
+					<div class="time_header_img" style="padding-top: 12px; width: 30px;"><img src="../img/gou_wu_che/rv4_setting_item_arrow.png" style="width: 100%;"></div>
+				</div>
+			</div>
 			<div style="height: 45px; width: 100%; background-color: white; border-bottom: 1px solid #e8e8e8;">
 				<div class="wu-Order-left" style="">
 					<div class="time_header_img"><img src="../img/gou_wu_che/ic_read_summary_comment.png" style="width: 100%;"></div>
@@ -97,15 +107,15 @@
 				</div>				
 			</div>
 			<div class="" style="height: 70px; padding-left: 5px; padding-right: 5px; padding-top: 5px; background-color: white;">
-				<a href="#" class="float_left" style="width: 20%;">
+				<a href="#" class="float_left" style="width: 20%;" id="OrdUntreatedOrder">
 					<div class="float_left_img"><img src="../img/gou_wu_che/dai_fukuan.png" style="width: 100%;"></div>
 					<div style="width: 100%; text-align: center; font-size: 12px; color: #666;">待处理</div>
 				</a>
-				<a href="#" class="float_left" style="width: 20%;">
+				<a href="#" class="float_left" style="width: 20%;" id="OrdClosedOrder">
 					<div class="float_left_img"><img src="../img/gou_wu_che/wu_liu.png" style="width: 100%;"></div>
 					<div style="width: 100%; text-align: center; font-size: 12px; color: #666;">失效订单</div>
 				</a>
-				<a href="#" class="float_left" style="width: 20%;">
+				<a href="#" class="float_left" style="width: 20%;" id="OrdFinishedOrder">
 					<div class="float_left_img"><img src="../img/gou_wu_che/tui_kuan.png" style="width: 100%;"></div>
 					<div style="width: 100%; text-align: center; font-size: 12px; color: #666;">达成交易</div>
 				</a>
@@ -113,16 +123,7 @@
 		</div>
 		
 		<div style="width: 100%; margin-bottom: 10px; box-shadow: 2px 2px 5px #ddd;">
-			<div style="height: 45px; width: 100%; background-color: white; border-bottom: 1px solid #e8e8e8;">
-				<div class="wu-Order-left" style="">
-					<div class="time_header_img"><img src="../img/gou_wu_che/mystore_my_asset_name_card.png" style="width: 100%;"></div>
-					<div class="time_header_txt">客服热线</div>
-				</div>
-				<div class="wu-Order-right">
-					<div class="time_header_txt" style="font-size: 12px; color: #666;">口袋服务热线电话</div>
-					<div class="time_header_img" style="padding-top: 12px; width: 30px;"><img src="../img/gou_wu_che/rv4_setting_item_arrow.png" style="width: 100%;"></div>
-				</div>
-			</div>
+			
 			<div style="height: 45px; width: 100%; background-color: white; border-bottom: 1px solid #e8e8e8;">
 				<div class="wu-Order-left" style="">
 					<div class="time_header_img" ><img src="../img/gou_wu_che/mystore_my_asset_medal.png" style="width: 100%;"></div>
@@ -165,6 +166,12 @@
       	})
       });
       
+      document.getElementById("MyCollect").addEventListener("tap",function(){
+      	mui.openWindow({
+      		url:'../StoreFile/MyCollect.html',
+      		id:'MyCollect'
+      	})
+      });
       
       document.getElementById("signIn").addEventListener("tap",function(){
       	mui.openWindow({
@@ -200,6 +207,24 @@
       	mui.openWindow({
       		url:'../StoreFile/PubFinishedOrder.html',
       		id:'PubFinishedOrder'
+      	})
+      });
+      document.getElementById("OrdUntreatedOrder").addEventListener("tap",function(){
+      	mui.openWindow({
+      		url:'../StoreFile/OrdUntreatedOrder.html',
+      		id:'OrdUntreatedOrder'
+      	})
+      });
+      document.getElementById("OrdClosedOrder").addEventListener("tap",function(){
+      	mui.openWindow({
+      		url:'../StoreFile/OrdClosedOrder.html',
+      		id:'OrdClosedOrder'
+      	})
+      });
+      document.getElementById("OrdFinishedOrder").addEventListener("tap",function(){
+      	mui.openWindow({
+      		url:'../StoreFile/OrdFinishedOrder.html',
+      		id:'OrdFinishedOrder'
       	})
       });
       

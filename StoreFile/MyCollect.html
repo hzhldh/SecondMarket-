@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/y_s.css" />
+		<style>
+			
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">我的收藏</h1>
+			<a class="mui-icon mui-icon-left-nav" id="closeID"></a>
+		</header>
+		<div class="mui-content">
+			<div style="width: 100%;padding: 0px 20px; margin-bottom: 20px;" id="goods_list">
+				
+				<!--布局原型-->
+				<!--<div class="wu-find-txt-img" id="25">				
+					<div class="wu-find-img">
+						<img src="../img/shuji_img/1.jpg" style="width: 100%; height: 100%;"/>
+					</div>
+					<div class="wu-find-txt">
+						<p style="float: right;">原价￥<span>50.0</span>	</p>
+						<p>二手价￥<span style="color: red;">29.9</span></p>		
+						<div style="height: 40px;">
+							<span>魅族MX6</span>
+							<p style="float: right">人气：1</p>
+						</div>
+						<p style="float: right;"><span>出售</span></p>
+						<p><span>2017-04-24</span></p>
+					</div>
+				</div>-->
+				
+			</div>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/j_s.js"></script>
+	<script type="text/javascript" src="../jquery/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript">
+	mui.init()
+	var url = getUrl(); 		
+	
+	mui.ajax(url+'/goods/selectValidGoods',{ 
+        data: {}, 
+        dataType: 'jsonp', 
+        type: 'post', 
+        timeout: 12000, 
+        success: function(data) { 	
+        	var json=$.parseJSON(data);//字符串转换为Json对象
+            $.each(json,function(index,domEle){
+            var html = '<div class="wu-find-txt-img" id="'+domEle.goods_id+'"><div class="wu-find-img"><img src="'+url+'/img/goodsImg/'+domEle.goods_img+'" style="width: 100%; height: 100%;"/></div>';
+            html +='<div class="wu-find-txt"><p style="float: right;">原价￥<span>'+domEle.original_price+'</span></p><p>二手价￥<span style="color: red;">'+domEle.second_price+'</span></p><div style="height: 40px;"><span>';
+            html +=domEle.goods_name+'</span><p style="float: right">人气：'+domEle.popularity+'</p></div><p style="float: right;"><span>'+domEle.source_type+'</span></p><p><span>';
+            html +=domEle.publish_time+'</span></p></div></div>';
+            $("#goods_list").append(html);
+         });
+        },
+        error: function() { 
+            mui.toast('网络异常，请稍后再试！'); 
+        } 
+   });
+   
+    //给新生成的元素添加点击事件,跳转到详情页，并传递物品id
+	$(document).on('click', '.wu-find-txt-img', function(e) {
+		var goods_id=$(this).attr("id");
+		mui.openWindow({
+		    url:'../StoreFile/ProductDetails.html',
+		    id:'ProductDetails',
+		    extras:{
+		        goods_id:goods_id
+		    }
+		});
+
+	});
+	
+	//刷新页面
+	window.addEventListener("pageflowrefresh", function (e) {
+	    location.reload();
+	});
+	
+	document.getElementById("closeID").addEventListener("tap", function() {
+			var myClose = plus.webview.currentWebview();
+			plus.webview.close(myClose);
+	});
+			
+		
+	</script>
+
+</html>
