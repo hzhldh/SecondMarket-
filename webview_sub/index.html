@@ -23,12 +23,12 @@
 				<img src="../img/index/fei_lei.png" style="width: 100%;" />
 			</div>
 			<div class="wu-input-conter">
+				<input type="text" id="search" class="wu-input-style" placeholder="搜索您想要的物品" style="height: 32px; border-radius: 8px; font-size: 13px;position: relative;bottom: 5px;">
+			</div>
+			<div class="wu-right" id="searchBtn">
+				<img src="../img/index/search.png" style="width: 100%;">
+			</div>
 
-				<input type="text" id="" class="wu-input-style" style="height: 32px; border-radius: 8px;">
-			</div>
-			<div class="wu-right">
-				<img src="../img/index/wen_jian.png" style="width: 100%;">
-			</div>
 		</header>
 		<div style="margin-top: 44px;" class="">
 			<div id="slider" class="mui-slider">
@@ -69,37 +69,37 @@
 			</div>
 			<div style="width: 100%; height: 185px; box-shadow: 2px 2px 5px #ccc;">
 				<div class="" style="height: 90px; padding-left: 5px; padding-right: 5px;">
-					<a href="#" class="float_left">
+					<a href="#" class="float_left" id="TypeSale">
 						<span><img src="../img/index/hao_shubang.png"></span>
 						<div class="mui-media-object">出售</div>
 					</a>
-					<a href="#" class="float_left">
+					<a href="#" class="float_left" id="TypeBuy">
 						<img src="../img/index/tong_shubang.png">
 						<div class="mui-media-object">求购</div>
 					</a>
-					<a href="#" class="float_left">
+					<a href="#" class="float_left" id="TypeLife">
 						<img src="../img/index/fu_zhuag.png">
 						<div class="mui-media-object">生活用品</div>
 					</a>
-					<a href="#" class="float_left">
+					<a href="#" class="float_left" id="TypeDigital">
 						<img src="../img/index/mu_ying.png">
 						<div class="mui-media-object">数码产品</div>
 					</a>
 				</div>
 				<div class="" style="height: 90px; border-top: 1px solid #ddd;">
-					<a href="#" class="float_left">
+					<a href="#" class="float_left" id="TypeVehicle">
 						<img src="../img/index/hai_wai.png">
 						<div class="mui-media-object">代步工具</div>
 					</a>
-					<a href="#" class="float_left">
+					<a href="#" class="float_left" id="TypeHouse">
 						<img src="../img/index/mei_zhuang.png">
 						<div class="mui-media-object">房源</div>
 					</a>
-					<a href="#" class="float_left">
+					<a href="#" class="float_left" id="TypeBook">
 						<img src="../img/index/dian_zishu.png">
-						<div class="mui-media-object">图书体育</div>
+						<div class="mui-media-object">图文体育</div>
 					</a>
-					<a href="#" class="float_left">
+					<a href="#" class="float_left" id="TypeOther">
 						<img src="../img/index/wei_hui.png">
 						<div class="mui-media-object">其他</div>
 					</a>
@@ -112,17 +112,76 @@
 			
 		</div>
 	</body>
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/j_s.js"></script>
+	<script type="text/javascript" src="../jquery/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript" charset="utf-8">
 		mui.init();
-
+		
+		//搜索
+		document.getElementById("searchBtn").addEventListener("tap", function() {
+			alert($("#search").val());
+//			mui.openWindow({
+//				url: 'find.html',
+//				id: 'find'
+//			})
+		});
+			
+		
+		//轮播图
 		var gallery = mui("#slider");
 		gallery.slider({
 			interval: 4000
 		});
-		mui.plusReady(function() {
-			theCountdown();
-		})
-
+		
+		document.getElementById("TypeSale").addEventListener("tap", function() {
+			mui.openWindow({
+				url: '../IndexPage/TypeSale.html',
+				id: 'TypeSale'
+			})
+		});
+		document.getElementById("TypeBuy").addEventListener("tap", function() {
+			mui.openWindow({
+				url: '../IndexPage/TypeBuy.html',
+				id: 'TypeBuy'
+			})
+		});
+		document.getElementById("TypeLife").addEventListener("tap", function() {
+			mui.openWindow({
+				url: '../IndexPage/TypeLife.html',
+				id: 'TypeLife'
+			})
+		});
+		document.getElementById("TypeDigital").addEventListener("tap", function() {
+			mui.openWindow({
+				url: '../IndexPage/TypeDigital.html',
+				id: 'TypeDigital'
+			})
+		});
+		document.getElementById("TypeVehicle").addEventListener("tap", function() {
+			mui.openWindow({
+				url: '../IndexPage/TypeVehicle.html',
+				id: 'TypeVehicle'
+			})
+		});
+		document.getElementById("TypeHouse").addEventListener("tap", function() {
+			mui.openWindow({
+				url: '../IndexPage/TypeHouse.html',
+				id: 'TypeHouse'
+			})
+		});
+		document.getElementById("TypeBook").addEventListener("tap", function() {
+			mui.openWindow({
+				url: '../IndexPage/TypeBook.html',
+				id: 'TypeBook'
+			})
+		});
+		document.getElementById("TypeOther").addEventListener("tap", function() {
+			mui.openWindow({
+				url: '../IndexPage/TypeOther.html',
+				id: 'TypeOther'
+			})
+		});
 		
 	</script>
 
