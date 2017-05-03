@@ -86,7 +86,7 @@
 <!--			<div class="wu-nav-left">
 				总额(含运费)<span style="color: red;font-size: 20px; font-weight: bold;">￥</span><span style="color: red;font-size: 18px; font-weight: bold;" id="totalAmount"></span>
 			</div>-->
-			<div class="wu-nav-right" id="placeOrder">
+			<div class="wu-nav-right" id="revokeOrder" style="display: none;">
 				撤销订单
 			</div>
 			
@@ -102,43 +102,60 @@
 	<script type="text/javascript">
 		mui.init()
 		var url = getUrl(); 
-		//var order_id=7;
-		var self = plus.webview.currentWebview();//获取页面传递过来的信息
+		var loginUserMessage=$.parseJSON(localStorage.getItem('loginUser'));//将用户信息转换为Json对象
+		var order_id;
+		//var goods_id;
 		
-		//获取订单详情
-        order_id = self.order_id;
-		mui.ajax(url+'/order/selectOrderDetail',{ 
-	        data: {order_id:order_id}, 
-	        dataType: 'jsonp', 
-	        type: 'post', 
-	        timeout: 12000, 
-	        success: function(data) { 	
-	        	var json=$.parseJSON(data);//字符串转换为Json对象
-	            var html = '<div class="wu-goodsReceipt"><div class="wu-Consignee"><div class="wu-Consignee_left">下单人：<span id="order_people">'+json.order_people+'</span></div><div class="wu-Consignee_right">手机：'+json.order_obj.phone+'</div></div>';
-	            html +='<div class="wu-address">短&nbsp;&nbsp;号：'+json.order_obj.short_num+'</div><div class="wu-Postcode">微&nbsp;&nbsp;信：'+json.order_obj.wechat+'</div></div>';
-	            html +='<div class="wu-goodsReceipt"><div class="wu-Consignee"><div class="wu-Consignee_left">发布人：<span id="publisher">'+json.publisher+'</span></div><div class="wu-Consignee_right">手机：'+json.publisher_obj.phone+'</div></div>';
-	            html +='<div class="wu-address">短&nbsp;&nbsp;号：'+json.publisher_obj.short_num+'</div><div class="wu-Postcode">微&nbsp;&nbsp;信：'+json.publisher_obj.wechat+'</div></div>';
-	            html +='<div class="wu-find-txt-img" id="'+json.goods_id+'"><div class="wu-find-img"><img src="'+url+'/img/goodsImg/'+json.goods.goods_img+'" style="width: 100%; height: 100%;"/></div>';
-	            html +='<div class="wu-find-txt"><p style="float: right;">原价￥<span>'+json.goods.original_price+'</span></p><p>二手价￥<span style="color: red;">'+json.goods.second_price+'</span></p><div style="height: 40px;"><span>';
-	            html +=json.goods.goods_name+'</span><p style="float: right">人气：'+json.goods.popularity+'</p></div><p style="float: right;"><span>'+json.goods.source_type+'</span></p><p><span>';
-	            html +=json.goods.publish_time+'</span></p></div></div>';
-	            html +='<div style="margin-bottom: 20px;"><div class="wu-goodsReceipt" style="border: none; margin-bottom: 60px; box-shadow: 1px 1px 10px #DDDDDD; padding-top: 10px; height: 120px;"><div class="wu-Consignee">';
-	            html +='<div class="wu-Consignee_left">订单编号：<span id="order_id">'+json.order_id+'</span></div><div class="wu-Consignee_right">物品编号：'+json.goods_id+'</div></div>';
-	            html +='<div class="wu-Consignee"><div style="float: left;">最终价：￥<span style="color: red;">'+json.final_price+'</span></div><div style="float: right;">下单时间：'+json.order_time+'</div></div>';
-	            html +='<div class="wu-Consignee"><div class="wu-Consignee_left">订单状态：<span style="color: red;" id="order_status">'+json.order_status+'</span></div><div class="wu-Consignee_right">备注：'+json.close_reason+'</div></div></div></div>';
-	            $("#order_content").append(html);
-	        },
-	        error: function() { 
-	            mui.toast('网络异常，请稍后再试！'); 
-	        } 
-	   });
-		
+		mui.plusReady(function() {//PC端不执行
+			//获取订单详情
+			var self = plus.webview.currentWebview();//获取页面传递过来的信息
+	        order_id = self.order_id;
+	        
+			mui.ajax(url+'/order/selectOrderDetail',{ 
+		        data: {order_id:order_id}, 
+		        dataType: 'jsonp', 
+		        type: 'post', 
+		        timeout: 12000, 
+		        success: function(data) { 	
+		        	var json=$.parseJSON(data);//字符串转换为Json对象
+		            var html = '<div class="wu-goodsReceipt"><div class="wu-Consignee"><div class="wu-Consignee_left">下单人：<span id="order_people">'+json.order_people+'</span></div><div class="wu-Consignee_right">手机：'+json.order_obj.phone+'</div></div>';
+		            html +='<div class="wu-address">短&nbsp;&nbsp;号：'+json.order_obj.short_num+'</div><div class="wu-Postcode">微&nbsp;&nbsp;信：'+json.order_obj.wechat+'</div></div>';
+		            html +='<div class="wu-goodsReceipt"><div class="wu-Consignee"><div class="wu-Consignee_left">发布人：<span id="publisher">'+json.publisher+'</span></div><div class="wu-Consignee_right">手机：'+json.publisher_obj.phone+'</div></div>';
+		            html +='<div class="wu-address">短&nbsp;&nbsp;号：'+json.publisher_obj.short_num+'</div><div class="wu-Postcode">微&nbsp;&nbsp;信：'+json.publisher_obj.wechat+'</div></div>';
+		            html +='<div class="wu-find-txt-img" id="'+json.goods_id+'"><div class="wu-find-img"><img src="'+url+'/img/goodsImg/'+json.goods.goods_img+'" style="width: 100%; height: 100%;"/></div>';
+		            html +='<div class="wu-find-txt"><p style="float: right;">原价￥<span>'+json.goods.original_price+'</span></p><p>二手价￥<span style="color: red;">'+json.goods.second_price+'</span></p><div style="height: 40px;"><span>';
+		            html +=json.goods.goods_name+'</span><p style="float: right">人气：'+json.goods.popularity+'</p></div><p style="float: right;"><span>'+json.goods.source_type+'</span></p><p><span>';
+		            html +=json.goods.publish_time+'</span></p></div></div>';
+		            html +='<div style="margin-bottom: 20px;"><div class="wu-goodsReceipt" style="border: none; margin-bottom: 60px; box-shadow: 1px 1px 10px #DDDDDD; padding-top: 10px; height: 120px;"><div class="wu-Consignee">';
+		            html +='<div class="wu-Consignee_left">订单编号：<span id="order_id">'+json.order_id+'</span></div><div class="wu-Consignee_right">物品编号：'+json.goods_id+'</div></div>';
+		            html +='<div class="wu-Consignee"><div style="float: left;">最终价：￥<span style="color: red;">'+json.final_price+'</span></div><div style="float: right;">下单时间：'+json.order_time+'</div></div>';
+		            html +='<div class="wu-Consignee"><div class="wu-Consignee_left">订单状态：<span style="color: red;" id="order_status">'+json.order_status+'</span></div><div class="wu-Consignee_right">备注：'+json.close_reason+'</div></div></div></div>';
+		            $("#order_content").append(html);
+	                //控制撤销、完成按钮显示
+				    if ($("#order_status").html()=="待处理"&&$("#publisher").html()==loginUserMessage.username) {//发布者查看
+				   	     document.getElementById("revokeOrder").style.display = "none";
+				   	     document.getElementById("agreeOrder").style.display = "block";
+				    }else if($("#order_status").html()=="待处理"&&$("#order_people").html()==loginUserMessage.username){//下单者查看
+				    	document.getElementById("revokeOrder").style.display = "block";
+				   	     document.getElementById("agreeOrder").style.display = "none";
+				    }else{
+				   	 document.getElementById("revokeOrder").style.display = "none";
+				   	 document.getElementById("agreeOrder").style.display = "none";
+				    }
+		        },
+		        error: function() { 
+		            mui.toast('网络异常，请稍后再试！'); 
+		        } 
+		  });	
+
+		});	
+
 		document.getElementById("closeID").addEventListener("tap", function() {
 			var myClose = plus.webview.currentWebview();
 			plus.webview.close(myClose);
 		});
 		
-		//给新生成的元素添加点击事件,跳转到详情页，并传递物品id
+		//点击图片,跳转到详情页，并传递物品id
 		$(document).on('click', '.wu-find-txt-img', function(e) {
 			var goods_id=$(this).attr("id");
 			mui.openWindow({
@@ -150,6 +167,63 @@
 			});
 		});
 		
+		//同意交易按钮
+		$(document).on('click', '#agreeOrder', function(e) {
+			//获取当前页面的goods_id
+			var goods_id=$('.wu-find-txt-img').attr("id");
+			if(confirm("您确认同意该交易吗？")) {
+				mui.ajax(url+'/order/FinishOrder',{ 		    	    	
+					data: { 
+						order_id:order_id,
+						goods_id:goods_id
+					}, 
+					dataType: 'jsonp', 
+					type: 'post', 
+					timeout: 12000, 
+					success: function(data) { 	
+					    if(data=="0"){				    	
+					    	location.reload();
+					    	mui.toast("交易成功");
+					    }else{
+					    	mui.toast("交易失败");
+					    }
+					},
+					error: function() { 
+					    mui.toast('网络异常，请稍后再试！'); 
+					} 
+			    });
+			} else {		
+			}
+		});
+		
+		//撤销订单
+		$(document).on('click', '#revokeOrder', function(e) {
+			//获取当前页面的goods_id
+			var goods_id=$('.wu-find-txt-img').attr("id");
+			if(confirm("您确认撤销该订单吗？")) {
+				mui.ajax(url+'/order/revokeOrder',{ 		    	    	
+					data: { 
+						order_id:order_id,
+						goods_id:goods_id
+					}, 
+					dataType: 'jsonp', 
+					type: 'post', 
+					timeout: 12000, 
+					success: function(data) { 	
+					    if(data=="0"){				    	
+					    	location.reload();
+					    	mui.toast("撤销成功");
+					    }else{
+					    	mui.toast("撤销失败");
+					    }
+					},
+					error: function() { 
+					    mui.toast('网络异常，请稍后再试！'); 
+					} 
+			    });
+			} else {		
+			}
+		});
 	</script>
 
 </html>

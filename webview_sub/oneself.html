@@ -53,11 +53,11 @@
 				</div>			
 			</div>
 			<div class="" style="height: 70px; padding-left: 5px; padding-right: 5px; padding-top: 5px; background-color: white;">
-				<a href="#" class="float_left" style="width: 20%;">
+				<a href="#" class="float_left" style="width: 20%;" id="MyPublish">
 					<div class="float_left_img"><img src="../img/gou_wu_che/dai_fukuan.png" style="width: 100%;"></div>
 					<div style="width: 100%; text-align: center; font-size: 12px; color: #666;">发布中</div>
 				</a>
-				<a href="#" class="float_left" style="width: 20%;">
+				<a href="#" class="float_left" style="width: 20%;" id="MyInvalidPublish">
 					<div class="float_left_img"><img src="../img/gou_wu_che/dai_pingjia.png" style="width: 100%;"></div>
 					<div style="width: 100%; text-align: center; font-size: 12px; color: #666;">已失效</div>
 				</a>
@@ -74,15 +74,15 @@
 				</div>			
 			</div>
 			<div class="" style="height: 70px; padding-left: 5px; padding-right: 5px; padding-top: 5px; background-color: white;">
-				<a href="#" class="float_left" style="width: 20%;">
+				<a href="#" class="float_left" style="width: 20%;" id="PubUntreatedOrder">
 					<div class="float_left_img"><img src="../img/gou_wu_che/dai_fukuan.png" style="width: 100%;"></div>
 					<div style="width: 100%; text-align: center; font-size: 12px; color: #666;">待处理</div>
 				</a>
-				<a href="#" class="float_left" style="width: 20%;">
+				<a href="#" class="float_left" style="width: 20%;" id="PubClosedOrder">
 					<div class="float_left_img"><img src="../img/gou_wu_che/dai_pingjia.png" style="width: 100%;"></div>
 					<div style="width: 100%; text-align: center; font-size: 12px; color: #666;">关闭订单</div>
 				</a>
-				<a href="#" class="float_left" style="width: 20%;">
+				<a href="#" class="float_left" style="width: 20%;" id="PubFinishedOrder">
 					<div class="float_left_img"><img src="../img/gou_wu_che/tui_kuan.png" style="width: 100%;"></div>
 					<div style="width: 100%; text-align: center; font-size: 12px; color: #666;">达成交易</div>
 				</a>
@@ -172,6 +172,37 @@
       		id:'signIn.html'
       	})
       });
+      document.getElementById("MyPublish").addEventListener("tap",function(){
+      	mui.openWindow({
+      		url:'../StoreFile/MyPublish.html',
+      		id:'MyPublish'
+      	})
+      });
+      document.getElementById("MyInvalidPublish").addEventListener("tap",function(){
+      	mui.openWindow({
+      		url:'../StoreFile/MyInvalidPublish.html',
+      		id:'MyInvalidPublish'
+      	})
+      });
+      document.getElementById("PubUntreatedOrder").addEventListener("tap",function(){
+      	mui.openWindow({
+      		url:'../StoreFile/PubUntreatedOrder.html',
+      		id:'PubUntreatedOrder'
+      	})
+      });
+      document.getElementById("PubClosedOrder").addEventListener("tap",function(){
+      	mui.openWindow({
+      		url:'../StoreFile/PubClosedOrder.html',
+      		id:'PubClosedOrder'
+      	})
+      });
+      document.getElementById("PubFinishedOrder").addEventListener("tap",function(){
+      	mui.openWindow({
+      		url:'../StoreFile/PubFinishedOrder.html',
+      		id:'PubFinishedOrder'
+      	})
+      });
+      
       
     //刷新页面
 	window.addEventListener("pageflowrefresh", function (e) {
