@@ -80,7 +80,7 @@
 		<div class="Settlement">
 			<div class="Collection" id="CollectionMe">
 				<div style="width: 100%; height: 40px;padding: 15px;">
-					<img src="../img/icon_baby_fav.png" style="width: 100%;">
+					<img src="../img/no-collect.png" style="width: 100%;">
 				</div>
 				<div style="width: 100%; height: 20px; line-height: 20px; text-align: center; font-size: 12px;">收藏</div>
 			</div>
@@ -107,7 +107,7 @@
 		mui.init();
 		var url = getUrl(); 
 		var goods_id;
-	
+		var loginUserMessage=$.parseJSON(localStorage.getItem('loginUser'));//将用户信息转换为Json对象
 
 		mui.plusReady(function() {//PC端不执行
 			var self = plus.webview.currentWebview();
@@ -146,6 +146,26 @@
 		        } 
 		    });
             
+            //查询该用户是否已收藏该物品
+            mui.ajax(url+'/collect/selectReapeatCollect',{ 
+		        data: { 
+		        	goods_id:goods_id,
+		        	username:loginUserMessage.username
+		        }, 
+		        dataType: 'jsonp', 
+		        type: 'post', 
+		        timeout: 12000, 
+		        success: function(data) { 	
+		            if (data=="0") {
+		            $("#CollectionMe").find('img').attr("src","../img/collect.png");
+		            } else{
+		            $("#CollectionMe").find('img').attr("src","../img/no-collect.png");
+		            }
+		        },
+		        error: function() { 
+		            mui.toast('网络异常，请稍后再试！'); 
+		        } 
+		    });
             
 		});	
 
@@ -158,6 +178,65 @@
 //		gallery.slider({
 //			interval: 4000
 //		});
+
+        //收藏事件
+        document.getElementById("CollectionMe").addEventListener("tap", function() {
+        	var imgSrc=$("#CollectionMe").find('img').attr("src");
+			if(localStorage.getItem("loginUser") == null) {
+				mui.toast("    你还未登录        ");
+				mui.openWindow({
+					url:'../signIn.html',
+					id:'signIn.html',
+				});
+				return false;
+			} else {
+			    if (imgSrc=="../img/no-collect.png") {//执行增加收藏
+			    	mui.ajax(url+'/collect/addCollect',{ 
+				        data: { 
+				        	goods_id:goods_id,
+				        	username:loginUserMessage.username
+				        }, 
+				        dataType: 'jsonp', 
+				        type: 'post', 
+				        timeout: 12000, 
+				        success: function(data) { 	
+				        	if (data=="0") {
+				        		$("#CollectionMe").find('img').attr("src","../img/collect.png");//换图
+				        		mui.toast("收藏成功 ");
+				        	}else{
+				        		mui.toast("收藏失败 ");
+				        	}
+				        },
+				        error: function() { 
+				            mui.toast('网络异常，请稍后再试！'); 
+				        } 
+				    });
+			    } else{//执行取消收藏
+			    	mui.ajax(url+'/collect/delCollect',{ 
+				        data: { 
+				        	goods_id:goods_id,
+				        	username:loginUserMessage.username
+				        }, 
+				        dataType: 'jsonp', 
+				        type: 'post', 
+				        timeout: 12000, 
+				        success: function(data) { 	
+				        	if (data=="0") {
+				        		$("#CollectionMe").find('img').attr("src","../img/no-collect.png");//换图
+				        		mui.toast("已取消收藏 ");
+				        	}else{
+				        		mui.toast("取消失败 ");
+				        	}
+				        },
+				        error: function() { 
+				            mui.toast('网络异常，请稍后再试！'); 
+				        } 
+				    });
+			    }
+	          
+			}
+
+		});
 
         //加入购物车事件
 		document.getElementById("addShoppingCartMe").addEventListener("tap", function() {
