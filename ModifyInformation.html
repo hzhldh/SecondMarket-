@@ -41,9 +41,12 @@
 	</body>
 	<script src="js/mui.min.js"></script>
 	<script type="text/javascript" src="js/j_s.js"></script>
+	<script type="text/javascript" src="jquery/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript">
 		mui.init()
-		var url = "http://139.196.196.64/s.asmx";
+		var url = getUrl(); 
+		var loginUserMessage=$.parseJSON(localStorage.getItem('loginUser'));//将用户信息转换为Json对象
+		
 		document.getElementById("headerClose").addEventListener("tap", function() {
 			mui.currentWebview.close();
 		});
@@ -52,66 +55,35 @@
 			var myOldPass = document.getElementById("oldPass").value;
 			var myNewPass = document.getElementById("newPass").value;
 			var myConfirmPass = document.getElementById("confirmPass").value;
-			var strNum = plus.storage.getItem('userPass');
-			if(myOldPass == "") {
-				mui.toast("       旧密码不能为空        ");
-				return false;
-			} else if(myOldPass != strNum) {
-				mui.toast("       旧密码不正确        ");
-				return false;
-			}
-
-			if(myNewPass == "") {
-				mui.toast("       新密码不能为空        ");
-				return false;
-			} else if(myConfirmPass == "") {
+			if(myOldPass == ""||myNewPass == "") {
+				mui.toast("       新旧密码不能为空        ");
+			}else if(myOldPass!=loginUserMessage.password){
+				mui.toast("       旧密码不正确       ");
+			}else if(myConfirmPass == "") {
 				mui.toast("       确认密码不能为空        ");
 			} else if(myNewPass != myConfirmPass) {
 				mui.toast("       前后密码不一致        ");
 			} else {
-				getAjax(url + "/SelectByKey", {
-						id: 'www',
-						table: 'wu',
-						key: 'password',
-						value: myOldPass,
-					},
-					function(a) {
-						alert(a);
-						var ojp = JSON.parse(a);
-						if(a == "[]") {
-							alert("密码错误");
-						} else {
-							var myID = ojp[0].userID;
-							var myName = ojp[0].userName;
-							var myNumber = ojp[0].phoneNumber;
-							var myState = ojp[0].useState;
-							getAjax(url + "/Update", {
-									id: 'www',
-									table: 'wu',
-									key: 'password',
-									keyvalue:strNum,
-									values: JSON.stringify({
-										'userID': myID,
-										'userName': myName,
-										'password': myNewPass,
-										'phoneNumber': myNumber,
-										'useState': myState
-									})
-								},
-								function(a) {
-									mui.toast("        修改成功，请重新登录               ");
-									
-								},
-								function(b) {
-									mui.toast("        修改失败            ");
-								})
-						}
-
-					},
-					function(d) {
-						alert(d);
-					}
-				)
+				/*提交修改*/
+				mui.ajax(url+'/user/UpdatePassword', {  
+                    data: {
+                    	username:loginUserMessage.username,
+                    	password:myNewPass
+                    },
+                    type: 'POST',  
+                    timeout: 12000,  
+                    success: function(data) {  
+                        if (data==0) {
+                        	mui.toast('密码修改成功');
+                        	localStorage.clear();
+                        }else{
+                        	mui.toast("修改失败");
+                        }
+                    },  
+                    error: function() {  
+                        mui.toast("连接服务器失败");  
+                    }  
+                });
 			}
 		});
 

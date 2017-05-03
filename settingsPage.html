@@ -19,18 +19,8 @@
 				<li class="wu-table-li-son"></li>
 				<!--站位li-->
 
-				<li class="wu-table-li" id="getuserName">
-					<span id="userName">曹操</span>
-					<a class="mui-icon mui-icon-arrowright mui-pull-right" style="color: #666;"></a>
-				</li>
-
-				<li class="wu-table-li-son"></li>
-				<!--站位li-->
-
-				<li class="wu-table-li">清除记录</li>
-				<li class="wu-table-li">显示高清图片</li>
-				<li class="wu-table-li">
-					<span id="userName">清除缓存</span>
+				<li class="wu-table-li" id="UpdatePassword">
+					<span>修改密码</span>
 					<a class="mui-icon mui-icon-arrowright mui-pull-right" style="color: #666;"></a>
 				</li>
 
@@ -45,14 +35,6 @@
 					<span id="userName">关于</span>
 					<a class="mui-icon mui-icon-arrowright mui-pull-right" style="color: #666;"></a>
 				</li>
-
-				<li class="wu-table-li-son"></li>
-				<!--站位li-->
-
-				<li class="wu-table-li">
-					<span id="userName">当当读书</span>
-					<a class="mui-icon mui-icon-arrowright mui-pull-right" style="color: #666;"></a>
-				</li>
 				<div style="padding: 20px;">
 					<button type="button" class="mui-btn-block" style="background-color:#ff463c; color: white; border: none;" id="exitLogin">退出登录</button>
 				</div>
@@ -61,12 +43,8 @@
 	</body>
 	<script src="js/mui.min.js"></script>
 	<script type="text/javascript">
-		mui.init()
-		mui.plusReady(function() {
-			var strNun = plus.storage.getItem('userName');
-			document.getElementById("userName").innerHTML = strNun;
-		});
-		document.getElementById("getuserName").addEventListener("tap", function() {
+		mui.init();
+		document.getElementById("UpdatePassword").addEventListener("tap", function() {
 			mui.openWindow({
 				url: 'ModifyInformation.html',
 				id: 'ModifyInformation'
