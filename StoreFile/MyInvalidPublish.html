@@ -1,0 +1,116 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/y_s.css" />
+	</head>
+
+	<body>
+       <header class="mui-bar mui-bar-nav">
+       	  <h1 class="mui-title">我的发布</h1>
+       	  <a class="mui-icon mui-icon-left-nav" id="closeID"></a>
+       </header>
+
+		<div class="mui-content" id="shoppingCart"> 
+			
+			
+			<div style="width: 100%; padding-bottom: 65px;" id="PublishList">
+			   <!--静态布局原型-->
+				<!--<div class='wu-Asingle' id='1'>
+					<div class='wu-Asingle-content'>
+						<div class='wu-Asingle-content-img'><img class='imgSrc' src='' alt="1" style='width: 100%; height: 100%;'/></div>
+						<div class='wu-Asingle-content-attribute'>
+							<div class='wu-content-header mui-ellipsis'>
+							<p>魅族MX6</p>	
+							<p>二手价：￥<span>10.00<span></p>						
+							</div>
+							<div class='wu-Asingle-delete' onclick='revokeMe(this)'></span><img src='../img/gou_wu_che/delete.png' style='width: 100%' /></div>
+						</div>
+					</div>
+					<div class='wu-Asingle-Total'><label style="float: left;">状态：<span class="status">有效</span></label> <label>发布来源：<span>出售</span><label>		
+					</div>
+				</div>-->			
+		
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/j_s.js"></script>
+	<script type="text/javascript" src="../jquery/jquery-1.9.1.min.js"></script>
+	
+	<script type="text/javascript">
+		mui.init()
+		var url = getUrl();   	   
+        var loginUserMessage=$.parseJSON(localStorage.getItem('loginUser'));//将用户信息转换为Json对象
+        
+ //       mui.plusReady(function() {//PC端不执行
+   	        if(localStorage.getItem("loginUser")!=null){
+   	        	mui.ajax(url+'/goods/selectGoodsByName',{ 
+			        data: {username:loginUserMessage.username}, 
+			        dataType: 'jsonp', 
+			        type: 'post', 
+			        timeout: 12000, 
+			        success: function(data) { 	
+			        	var json=$.parseJSON(data);//字符串转换为Json对象
+			            $.each(json,function(index,domEle){
+			            	var html="<div class='wu-Asingle' id='"+domEle.goods_id+"'><div class='wu-Asingle-content'><div class='wu-Asingle-content-img'><img class='imgSrc' src='"+url+"/img/goodsImg/"+domEle.goods_img+"' alt='"+domEle.goods_id+"' style='width: 100%; height: 100%;'/></div>";
+			            	html +="<div class='wu-Asingle-content-attribute'><div class='wu-content-header mui-ellipsis'><p>"+domEle.goods_name+"</p>	<p>二手价：￥<span>"+domEle.second_price+"<span></p></div>";
+			            	html +="<div class='wu-Asingle-delete' onclick='revokeMe(this)'></span><img src='../img/gou_wu_che/delete.png' style='width: 100%' /></div></div></div>";
+			            	html +="<div class='wu-Asingle-Total'><label style='float: left;'>状态：<span class='status'>"+domEle.goods_status+"</span></label> <label>发布来源：<span>"+domEle.source_type+"</span><label></div></div>";
+			                $("#PublishList").append(html);
+				        });
+				    },
+				    error: function() { 
+				         mui.toast('网络异常，请稍后再试！'); 
+				    } 
+				 });
+        	}else{
+        		mui.toast("未登录");
+        	}
+//		});
+        
+        //撤销发布
+		function revokeMe(event) { 
+			var del_id = event.parentNode.parentNode.parentNode.id; //获取父节点的shopping_id	
+			if(confirm("你确认撤销吗？")) {
+				mui.ajax(url+'/goods/revokeGoods',{ 		    	    	
+					data: { 
+						goods_id:del_id
+					}, 
+					dataType: 'jsonp', 
+					type: 'post', 
+					timeout: 12000, 
+					success: function(data) { 	
+					    if(data=="0"){				    	
+					    	location.reload();
+					    	mui.toast("撤销成功");
+					    }else{
+					    	mui.toast("撤销失败");
+					    }
+					},
+					error: function() { 
+					    mui.toast('网络异常，请稍后再试！'); 
+					} 
+			    });
+			} else {			
+			}
+	    }
+		
+		//点击图片跳转到详情页
+		$(document).on('click', '.imgSrc', function(e) {
+			//图片alt属性为goods_id
+			var goods_id=$(this).attr("alt");
+			mui.openWindow({
+			    url:'../StoreFile/ProductDetails.html',
+			    id:'ProductDetails',
+			    extras:{
+			        goods_id:goods_id
+			    }
+			});
+		});
+	</script>
+
+</html>
