@@ -102,11 +102,11 @@
 	<script type="text/javascript">
 		mui.init()
 		var url = getUrl(); 
-		var order_id=7;
-		//var self = plus.webview.currentWebview();//获取页面传递过来的信息
+		//var order_id=7;
+		var self = plus.webview.currentWebview();//获取页面传递过来的信息
 		
 		//获取订单详情
-        //order_id = self.order_id;
+        order_id = self.order_id;
 		mui.ajax(url+'/order/selectOrderDetail',{ 
 	        data: {order_id:order_id}, 
 	        dataType: 'jsonp', 
