@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/y_s.css" />
+	</head>
+
+	<body>
+       <header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">已完成订单</h1>
+			<a class="mui-icon mui-icon-left-nav" id="closeID"></a>
+		</header>
+       <div class="mui-content">
+       	  <div style="width: 100%; padding-bottom: 65px;" id="OrderList">
+				   <!--静态布局原型-->
+					<!--<div class='wu-Asingle' id='5'>
+						<div class='wu-Asingle-Total'><label style="float: left;">订单编号：<span>125</span></label> <label>下单时间：2017-05-02-11:26:47<label>		
+						</div>
+						<div class='wu-Asingle-content'>
+							<div class='wu-Asingle-content-img'><img class='imgSrc' src='http://192.168.24.43:8080/SecondMarketServer/img/goodsImg/2017-04-24-172648-819.jpg' style='width: 100%; height: 100%;'/></div>
+							<div class='wu-Asingle-content-attribute'>
+								<div class='wu-content-header mui-ellipsis'>
+								<p>小米6</p>
+								<p>最终价：￥10.00</p>
+								</div>
+							</div>
+						</div>
+						<div class='wu-Asingle-Total'><label style="float: left;">订单状态：<span>待处理</span></label> <label>发布来源：<span>出售</span><label>		
+						</div>
+					</div>	-->
+			</div>
+       </div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/j_s.js"></script>
+	<script type="text/javascript" src="../jquery/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript">
+		mui.init()
+		var url = getUrl(); 
+		var loginUserMessage=$.parseJSON(localStorage.getItem('loginUser'));//将用户信息转换为Json对象
+		
+		mui.ajax(url+'/order/selectFinishedOrderByPublisher',{ 		    	    	
+			data: { 
+				publisher:loginUserMessage.username
+			}, 
+			dataType: 'jsonp', 
+			type: 'post', 
+			timeout: 12000, 
+			success: function(data) { 	
+			    var json=$.parseJSON(data);//字符串转换为Json对象
+			    $.each(json,function(index,domEle){
+			    var html="<div class='wu-Asingle' id='"+domEle.order_id+"'><div class='wu-Asingle-Total'><label style='float: left;'>订单编号：<span>"+domEle.order_id+"</span></label> <label>下单时间："+domEle.order_time+"<label></div>";
+			    html+="<div class='wu-Asingle-content'><div class='wu-Asingle-content-img'><img class='imgSrc' src='"+url+"/img/goodsImg/"+domEle.goods.goods_img+"' style='width: 100%; height: 100%;'/></div>";
+			    html+="<div class='wu-Asingle-content-attribute'><div class='wu-content-header mui-ellipsis'><p>"+domEle.goods.goods_name+"</p><p>最终价：￥"+domEle.final_price+"</p></div></div></div>";
+			    html+="<div class='wu-Asingle-Total'><label style='float: left;'>订单状态：<span>"+domEle.order_status+"</span></label> <label>发布来源：<span>"+domEle.goods.source_type+"</span><label></div></div>";
+			    $("#OrderList").append(html);		    
+			    });		   
+			},
+			error: function() { 
+			    mui.toast('网络异常，请稍后再试！'); 
+			} 
+	    });
+		
+		//点击跳转到订单详情页
+		$(document).on('click', '.wu-Asingle', function(e) {
+			var order_id=$(this).attr("id");
+			mui.openWindow({
+			    url:'../StoreFile/orderDetails.html',
+			    id:'orderDetails',
+			    extras:{
+			        order_id:order_id
+			    }
+			});
+		});
+		
+		document.getElementById("closeID").addEventListener("tap", function() {
+			var myClose = plus.webview.currentWebview();
+			plus.webview.close(myClose);
+		});
+	</script>
+
+</html>
