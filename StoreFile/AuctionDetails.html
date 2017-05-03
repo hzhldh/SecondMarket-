@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/y_s.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">竞拍详情</h1>
+			<a class="mui-icon mui-icon-left-nav" id="closeID"></a>
+		</header>
+		<div class="mui-content">
+			
+			<!--<div class="wu-goodsReceipt">
+				<div class="wu-Consignee">
+					<div class="wu-Consignee_left">竞拍人：愈进</div>
+				</div>
+				<div class="wu-address">
+					出&nbsp;&nbsp;价：988
+				</div>
+				<div class="wu-Postcode">
+					时&nbsp;&nbsp;间：2017-05-02-11:26:47
+				</div>
+			</div>-->
+			
+		</div>
+
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/j_s.js"></script>
+	<script type="text/javascript" src="../jquery/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript">
+		mui.init()
+		var url = getUrl(); 
+		var goods_id;
+		
+		mui.plusReady(function() {//PC端不执行
+			var self = plus.webview.currentWebview();
+              goods_id = self.goods_id;
+            //根据物品编号从服务器请求页面数据
+            mui.ajax(url+'/order/selectAuctionByGoodsId',{ 
+		        data: { 
+		        	goods_id:goods_id
+		        }, 
+		        dataType: 'jsonp', 
+		        type: 'post', 
+		        timeout: 12000, 
+		        success: function(data) { 	
+		            var json=$.parseJSON(data);//字符串转换为Json对象
+				    $.each(json,function(index,domEle){
+				       var html='<div class="wu-goodsReceipt"><div class="wu-Consignee"><div class="wu-Consignee_left">竞拍人：'+domEle.order_people+'</div></div>';
+				       html+='<div class="wu-address">出&nbsp;&nbsp;价：'+domEle.final_price+'</div><div class="wu-Postcode">时&nbsp;&nbsp;间：'+domEle.order_time+'</div></div>';
+					   $(".mui-content").append(html);		    
+					});
+		        },
+		        error: function() { 
+		            mui.toast('网络异常，请稍后再试！'); 
+		        } 
+		    });
+            
+            
+ 		});	
+		
+		
+		document.getElementById("closeID").addEventListener("tap", function() {
+			var myClose = plus.webview.currentWebview();
+			plus.webview.close(myClose);
+		});
+	</script>
+
+</html>

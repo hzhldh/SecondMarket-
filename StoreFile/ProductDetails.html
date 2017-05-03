@@ -36,9 +36,9 @@
 			<div style="padding: 3px 15px;background-color: white;">
 				<p class="mui-ellipsis" style="color: #222;font-size: 15px;" id="briefIntroduction"></p>
 				<div style="font-size: 13px;color: #B6B6B6;" id="author">
-					<span style="float: left;">类型：<span id="type"></span></span>
-					<span style="margin-left: 35px;">人气值：<span id="popularity"></span></span>
-					<span style="float: right;">竞拍数：<span id="auction_num"></span></span>
+					<span style="">类型：<span id="type"></span></span>
+					<span style="float: right">人气值：<span id="popularity"></span></span>
+					<!--<span style="float: right;">竞拍数：<span id="auction_num"></span></span>-->
 				</div>
 			</div>
 			<div style="height: 50px; line-height: 50px; background-color: white; margin: 6px 0px; padding: 0px 10px; font-size: 13px;">
@@ -90,11 +90,11 @@
 					<img src="../img/gou_wu_che/dai_fahuo.png" style="width: 100%;">
 				</div>
 				<a href="../webview_sub/TheShoppingCart.html">
-				<div style="width: 100%; height: 20px; line-height: 20px; text-align: center; font-size: 12px;">购物车</div>
+				<div style="width: 100%; height: 20px; line-height: 20px; text-align: center; font-size: 12px;color: #000;">购物车</div>
 				</a>
 			</div>
-			<div class="Shopping" style="line-height: 60px;" id="ShoppingMe">
-				立即购买
+			<div class="Shopping" style="line-height: 60px;" id="Auction">
+				竞拍情况(<span id="auction_num">0</span>)
 			</div>
 			<div class="addShoppingCart" style="line-height: 60px;" id="addShoppingCartMe">
 				加入购物车
@@ -115,37 +115,37 @@
             goods_id = self.goods_id;
             //根据物品编号从服务器请求页面数据
             mui.ajax(url+'/goods/selectGoodsDetails',{ 
-	        data: { 
-	        	goods_id:goods_id
-	        }, 
-	        dataType: 'jsonp', 
-	        type: 'post', 
-	        timeout: 12000, 
-	        success: function(data) { 	
-	            var json=$.parseJSON(data);//字符串转换为Json对象
-	            var imgPath=url+'/img/goodsImg/'+json[0].goods_img;
-                
-              	$("#goods_img2").attr('src',imgPath);
- 				$("#second_price").html(json[0].second_price);
- 				$("#original_price").html(json[0].original_price);
- 				$("#publish_time").html(json[0].publish_time);
- 				$("#type").html(json[0].type);
- 				$("#popularity").html(json[0].popularity);
- 				$("#auction_num").html(json[0].auction_num);
- 				$("#source_type").html(json[0].source_type);
- 				$("#goods_name").html(json[0].goods_name);
- 				$("#publisher").html(json[0].publisher);
- 				$("#phone").html(json[0].phone);
- 				$("#short_num").html(json[0].short_num);
- 				$("#wechat").html(json[0].wechat);
- 				$("#old_degree").html(json[0].old_degree);
- 				$("#description").html(json[0].description);	
- 				$("#goods_img").attr('src',imgPath);
-	        },
-	        error: function() { 
-	            mui.toast('网络异常，请稍后再试！'); 
-	        } 
-	    });
+		        data: { 
+		        	goods_id:goods_id
+		        }, 
+		        dataType: 'jsonp', 
+		        type: 'post', 
+		        timeout: 12000, 
+		        success: function(data) { 	
+		            var json=$.parseJSON(data);//字符串转换为Json对象
+		            var imgPath=url+'/img/goodsImg/'+json[0].goods_img;
+	                
+	              	$("#goods_img2").attr('src',imgPath);
+	 				$("#second_price").html(json[0].second_price);
+	 				$("#original_price").html(json[0].original_price);
+	 				$("#publish_time").html(json[0].publish_time);
+	 				$("#type").html(json[0].type);
+	 				$("#popularity").html(json[0].popularity);
+	 				$("#auction_num").html(json[0].auction_num);
+	 				$("#source_type").html(json[0].source_type);
+	 				$("#goods_name").html(json[0].goods_name);
+	 				$("#publisher").html(json[0].publisher);
+	 				$("#phone").html(json[0].phone);
+	 				$("#short_num").html(json[0].short_num);
+	 				$("#wechat").html(json[0].wechat);
+	 				$("#old_degree").html(json[0].old_degree);
+	 				$("#description").html(json[0].description);	
+	 				$("#goods_img").attr('src',imgPath);
+		        },
+		        error: function() { 
+		            mui.toast('网络异常，请稍后再试！'); 
+		        } 
+		    });
             
             
 		});	
@@ -155,13 +155,12 @@
 			plus.webview.close(myClose);
 		});
 
-
 //		var gallery = mui("#slider");
 //		gallery.slider({
 //			interval: 4000
 //		});
 
-
+        //加入购物车事件
 		document.getElementById("addShoppingCartMe").addEventListener("tap", function() {
 			if(localStorage.getItem("loginUser") == null) {
 				mui.toast("    你还未登录        ");
@@ -196,6 +195,17 @@
 			    });
 			}
 
+		});
+		
+		//查看竞拍情况
+		document.getElementById("Auction").addEventListener("tap", function() {
+			mui.openWindow({
+			    url:'../StoreFile/AuctionDetails.html',
+			    id:'AuctionDetails',
+			    extras:{
+			        goods_id:goods_id
+			    }
+			});
 		});
 		
 	</script>
