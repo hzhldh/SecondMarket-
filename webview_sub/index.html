@@ -120,11 +120,14 @@
 		
 		//搜索
 		document.getElementById("searchBtn").addEventListener("tap", function() {
-			alert($("#search").val());
-//			mui.openWindow({
-//				url: 'find.html',
-//				id: 'find'
-//			})
+		//	alert($("#search").val());
+			mui.openWindow({
+				url: '../IndexPage/Search.html',
+				id: 'Search',
+				extras:{
+			        search:$("#search").val()
+			    }
+			})
 		});
 			
 		
@@ -137,49 +140,73 @@
 		document.getElementById("TypeSale").addEventListener("tap", function() {
 			mui.openWindow({
 				url: '../IndexPage/TypeSale.html',
-				id: 'TypeSale'
+				id: 'TypeSale',
+				extras:{
+			        source_type:"出售"
+			    }
 			})
 		});
 		document.getElementById("TypeBuy").addEventListener("tap", function() {
 			mui.openWindow({
 				url: '../IndexPage/TypeBuy.html',
-				id: 'TypeBuy'
+				id: 'TypeBuy',
+				extras:{
+			        source_type:"求购"
+			    }
 			})
 		});
 		document.getElementById("TypeLife").addEventListener("tap", function() {
 			mui.openWindow({
 				url: '../IndexPage/TypeLife.html',
-				id: 'TypeLife'
+				id: 'TypeLife',
+				extras:{
+			        type:"生活用品"
+			    }
 			})
 		});
 		document.getElementById("TypeDigital").addEventListener("tap", function() {
 			mui.openWindow({
 				url: '../IndexPage/TypeDigital.html',
-				id: 'TypeDigital'
+				id: 'TypeDigital',
+				extras:{
+			        type:"数码产品"
+			    }
 			})
 		});
 		document.getElementById("TypeVehicle").addEventListener("tap", function() {
 			mui.openWindow({
 				url: '../IndexPage/TypeVehicle.html',
-				id: 'TypeVehicle'
+				id: 'TypeVehicle',
+				extras:{
+			        type:"代步工具"
+			    }
 			})
 		});
 		document.getElementById("TypeHouse").addEventListener("tap", function() {
 			mui.openWindow({
 				url: '../IndexPage/TypeHouse.html',
-				id: 'TypeHouse'
+				id: 'TypeHouse',
+				extras:{
+			        type:"房源"
+			    }
 			})
 		});
 		document.getElementById("TypeBook").addEventListener("tap", function() {
 			mui.openWindow({
 				url: '../IndexPage/TypeBook.html',
-				id: 'TypeBook'
+				id: 'TypeBook',
+				extras:{
+			        type:"图文体育"
+			    }
 			})
 		});
 		document.getElementById("TypeOther").addEventListener("tap", function() {
 			mui.openWindow({
 				url: '../IndexPage/TypeOther.html',
-				id: 'TypeOther'
+				id: 'TypeOther',
+				extras:{
+			        type:"其他"
+			    }
 			})
 		});
 		

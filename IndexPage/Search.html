@@ -45,28 +45,32 @@
 	<script type="text/javascript" src="../jquery/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript">
 	mui.init()
-	var url = getUrl(); 		
+	var url = getUrl(); 
+	var search;
 	
-	mui.ajax(url+'/goods/selectValidGoods',{ 
-        data: {}, 
-        dataType: 'jsonp', 
-        type: 'post', 
-        timeout: 12000, 
-        success: function(data) { 	
-        	var json=$.parseJSON(data);//字符串转换为Json对象
-            $.each(json,function(index,domEle){
-            var html = '<div class="wu-find-txt-img" id="'+domEle.goods_id+'"><div class="wu-find-img"><img src="'+url+'/img/goodsImg/'+domEle.goods_img+'" style="width: 100%; height: 100%;"/></div>';
-            html +='<div class="wu-find-txt"><p style="float: right;">原价￥<span>'+domEle.original_price+'</span></p><p>二手价￥<span style="color: red;">'+domEle.second_price+'</span></p><div style="height: 40px;"><span>';
-            html +=domEle.goods_name+'</span><p style="float: right">人气：'+domEle.popularity+'</p></div><p style="float: right;"><span>'+domEle.source_type+'</span></p><p><span>';
-            html +=domEle.publish_time+'</span></p></div></div>';
-            $("#goods_list").append(html);
-         });
-        },
-        error: function() { 
-            mui.toast('网络异常，请稍后再试！'); 
-        } 
-   });
-   
+	mui.plusReady(function() {//PC端不执行
+		var self = plus.webview.currentWebview();
+		search = self.search;
+		mui.ajax(url+'/goods/selectGoodsBySearch',{ 
+	        data: {search:search}, 
+	        dataType: 'jsonp', 
+	        type: 'post', 
+	        timeout: 12000, 
+	        success: function(data) { 	
+	        	var json=$.parseJSON(data);//字符串转换为Json对象
+	            $.each(json,function(index,domEle){
+	            var html = '<div class="wu-find-txt-img" id="'+domEle.goods_id+'"><div class="wu-find-img"><img src="'+url+'/img/goodsImg/'+domEle.goods_img+'" style="width: 100%; height: 100%;"/></div>';
+	            html +='<div class="wu-find-txt"><p style="float: right;">原价￥<span>'+domEle.original_price+'</span></p><p>二手价￥<span style="color: red;">'+domEle.second_price+'</span></p><div style="height: 40px;"><span>';
+	            html +=domEle.goods_name+'</span><p style="float: right">人气：'+domEle.popularity+'</p></div><p style="float: right;"><span>'+domEle.source_type+'</span></p><p><span>';
+	            html +=domEle.publish_time+'</span></p></div></div>';
+	            $("#goods_list").append(html);
+	         });
+	        },
+	        error: function() { 
+	            mui.toast('网络异常，请稍后再试！'); 
+	        } 
+	    });
+    });
     //给新生成的元素添加点击事件,跳转到详情页，并传递物品id
 	$(document).on('click', '.wu-find-txt-img', function(e) {
 		var goods_id=$(this).attr("id");
