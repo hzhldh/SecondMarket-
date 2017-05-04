@@ -43,6 +43,18 @@
 						<input type="text" id="phone" />
 					</div>
 				</li>
+				<li class="wu-li-style" style="border-bottom: 1px solid #e8e9ea;">
+					<div class="mui-input-row" style="margin-top: 4px;margin-top: 4px;">
+						<label>短号:</label>
+						<input type="text" id="short_num" placeholder="选填"/>
+					</div>
+				</li>
+				<li class="wu-li-style" style="border-bottom: 1px solid #e8e9ea;">
+					<div class="mui-input-row" style="margin-top: 4px;margin-top: 4px;">
+						<label>微信号:</label>
+						<input type="text" id="wechat" placeholder="选填"/>
+					</div>
+				</li>
 			</ul>
 			<div class="wu-txt-prompt" style="margin-top: 15px;">
 				密码由6-16位数字，字母或符号组成，不能是6位以下的纯数字
@@ -69,6 +81,8 @@
 			var password = document.getElementById("password").value;
 			var password2 = document.getElementById("password2").value;
 			var phone = document.getElementById("phone").value;
+			var short_num = document.getElementById("short_num").value;
+			var wechat = document.getElementById("wechat").value;
 			
 			if (username.length == 0||password.length == 0) {
 				mui.toast("用户名或密码不能为空！");
@@ -81,7 +95,7 @@
 			} else{
 				/*注册验证*/
 				mui.ajax(url+'/user/addUser', {  
-                    data: {username:username,password:password,phone:phone},
+                    data: {username:username,password:password,phone:phone,short_num:short_num,wechat:wechat},
                     type: 'POST',  
                     timeout: 100000,  
                     success: function(data) {  

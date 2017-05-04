@@ -5,7 +5,7 @@
 		"iPad"
 	],
 	"id": "H5AE60152",/*应用的标识，创建应用时自动生成，勿手动修改*/
-	"name": "GalleryBookstore",/*应用名称，程序桌面图标名称*/
+	"name": "校园拍",/*应用名称，程序桌面图标名称*/
 	"version": {
 		"name": "1.0.0",/*应用版本名称*/
 		"code": "83"
@@ -164,7 +164,7 @@
 				"android": {
 					"hdpi": "unpackage/res/icons/72x72.png", /*高分屏程序图标，分辨率：72x72*/
 					"xhdpi": "unpackage/res/icons/96x96.png",/*720P高分屏程序图标，分辨率：96x96*/
-					"xxhdpi": "unpackage/res/icons/144x144.png"
+					"xxhdpi": "unpackage/res/icons/144x144.png","ldpi":"unpackage/res/icons/48x48.png","mdpi":"unpackage/res/icons/48x48.png","xxxhdpi":"unpackage/res/icons/192x192.png"
 				}
 			},
 			"splashscreen": {
