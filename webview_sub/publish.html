@@ -197,7 +197,6 @@
         c.captureImage(function(e) { 
             plus.io.resolveLocalFileSystemURL(e, function(entry) { 
                 var s = entry.toLocalURL() + "?version=" + new Date().getTime(); 
-                //uploadHead(s); /*上传图片*/ 
                 savaImgData(s);//获取imgData
             }, function(e) { 
                  mui.alert(e.message);
@@ -257,7 +256,6 @@
         image.src = imgPath; 
         image.onload = function() { 
         imgData = getBase64Image(image);//图片的base64码       
-   
         var newSrc="data:image/jpg;base64,"+imgData;
         $("#previewImg").attr('src',newSrc);//界面预览该图片
         }

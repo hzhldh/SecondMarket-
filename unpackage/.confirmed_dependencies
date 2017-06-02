@@ -81,10 +81,14 @@
       "img/index/tong_shubang.png",
       "img/index/wei_hui.png",
       "img/index/mei_zhuang.png",
-      "img/index/hao_shubang.png"
+      "img/index/hao_shubang.png",
+      "jquery/jquery-1.9.1.min.js",
+      "img/index/search.png"
     ],
     "refer": [
-      "StoreFile/shop.html"
+      "StoreFile/shop.html",
+      "IndexPage/TypeSale.html",
+      "IndexPage/TypeBook.html"
     ]
   },
   "webview.html": {
@@ -102,7 +106,8 @@
       "webview_sub/TheShoppingCart.html",
       "webview_sub/oneself.html",
       "webview_sub/classification.html",
-      "webview_sub/find.html"
+      "webview_sub/find.html",
+      "webview_sub/publish.html"
     ]
   },
   "webview_sub/classification.html": {
@@ -144,7 +149,9 @@
       "img/shuji_img/6.jpg",
       "css/mui.css"
     ],
-    "refer": []
+    "refer": [
+      "StoreFile/ProductDetails.html"
+    ]
   },
   "webview_sub/oneself.html": {
     "resources": [
@@ -171,12 +178,16 @@
       "img/gou_wu_che/mystore_my_asset_gift_card.png",
       "img/gou_wu_che/mystore_my_asset_name_card.png",
       "img/gou_wu_che/ic_read_summary_comment.png",
-      "img/gou_wu_che/mystore_my_asset_medal.png"
+      "img/gou_wu_che/mystore_my_asset_medal.png",
+      "js/j_s.js",
+      "jquery/jquery-1.9.1.min.js"
     ],
     "refer": [
       "signIn.html",
       "settingsPage.html",
-      "StoreFile/commodityOrder.html"
+      "StoreFile/commodityOrder.html",
+      "StoreFile/PubUntreatedOrder.html",
+      "StoreFile/MyPublish.html"
     ]
   },
   "webview_sub/TheShoppingCart.html": {
@@ -198,7 +209,8 @@
       "signIn.html",
       "StoreFile/orderPage.html",
       "StoreFile/shop.html",
-      "webview_sub/index.html"
+      "webview_sub/index.html",
+      "webview_sub/find.html"
     ]
   },
   "ModifyInformation.html": {
@@ -266,11 +278,14 @@
       "img/gou_wu_che/dai_fahuo.png",
       "img/gou_wu_che/dai_fukuan.png",
       "img/gou_wu_che/ogq.png",
-      "jquery/jquery-1.9.1.js"
+      "jquery/jquery-1.9.1.js",
+      "img/no-collect.png",
+      "jquery/jquery-1.9.1.min.js"
     ],
     "refer": [
       "webview.html",
-      "signIn.html"
+      "signIn.html",
+      "StoreFile/AuctionDetails.html"
     ]
   },
   "StoreFile/commentPage.html": {
@@ -340,6 +355,94 @@
       "css/y_s.css",
       "css/mui.min.css",
       "img/banner/banner5.jpg"
+    ]
+  },
+  "IndexPage/TypeSale.html": {
+    "refer": [
+      "StoreFile/ProductDetails.html"
+    ]
+  },
+  "StoreFile/AuctionDetails.html": {
+    "resources": [
+      "js/j_s.js",
+      "jquery/jquery-1.9.1.min.js",
+      "js/mui.min.js",
+      "css/y_s.css",
+      "fonts/mui.ttf",
+      "css/mui.min.css"
+    ]
+  },
+  "StoreFile/PubUntreatedOrder.html": {
+    "resources": [
+      "fonts/mui.ttf"
+    ],
+    "refer": [
+      "StoreFile/orderDetails.html"
+    ]
+  },
+  "StoreFile/MyPublish.html": {
+    "resources": [
+      "fonts/mui.ttf",
+      "img/gou_wu_che/delete.png"
+    ]
+  },
+  "StoreFile/OrdUntreatedOrder.html": {
+    "refer": [
+      "StoreFile/orderDetails.html"
+    ],
+    "resources": [
+      "js/j_s.js",
+      "jquery/jquery-1.9.1.min.js",
+      "js/mui.min.js",
+      "css/y_s.css",
+      "fonts/mui.ttf",
+      "css/mui.min.css"
+    ]
+  },
+  "StoreFile/orderDetails.html": {
+    "resources": [
+      "js/j_s.js",
+      "jquery/jquery-1.9.1.min.js",
+      "js/mui.min.js",
+      "css/y_s.css",
+      "fonts/mui.ttf",
+      "css/mui.min.css"
+    ]
+  },
+  "StoreFile/MyCollect.html": {
+    "resources": [
+      "js/j_s.js",
+      "jquery/jquery-1.9.1.min.js",
+      "js/mui.min.js",
+      "css/y_s.css",
+      "fonts/mui.ttf",
+      "css/mui.css"
+    ]
+  },
+  "StoreFile/OrdFinishedOrder.html": {
+    "resources": [
+      "js/j_s.js",
+      "jquery/jquery-1.9.1.min.js",
+      "js/mui.min.js",
+      "css/y_s.css",
+      "fonts/mui.ttf",
+      "css/mui.min.css"
+    ]
+  },
+  "StoreFile/MyInvalidPublish.html": {
+    "resources": [
+      "js/j_s.js",
+      "jquery/jquery-1.9.1.min.js",
+      "js/mui.min.js",
+      "css/y_s.css",
+      "fonts/mui.ttf",
+      "css/mui.min.css"
+    ]
+  },
+  "webview_sub/publish.html": {
+    "resources": [
+      "fonts/mui.ttf",
+      "css/mui.min.css"
     ]
   }
 }
